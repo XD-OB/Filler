@@ -192,8 +192,10 @@ void	cercle_it(t_filler **filler, int victim)
 {
 	int	i;
 	int	j;
+	int	t;
 
 	i = 0;
+	t = (victim < 0) ? 1 : victim + 1;
 	while (i < (*filler)->rows)
 	{
 		j = 0;
@@ -201,22 +203,22 @@ void	cercle_it(t_filler **filler, int victim)
 		{
 			if (((*filler)->map)[i][j] == victim)
 			{
-				if (i > 0 && ((*filler)->map)[i - 1][j] >= 0)
-					((*filler)->map)[i - 1][j] = victim + 1;
-				if (j > 0 && ((*filler)->map)[i][j - 1] >= 0)
-					((*filler)->map)[i][j - 1] = victim + 1;
-				if (i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j] >= 0)
-					((*filler)->map)[i + 1][j] = victim + 1;
-				if (j < ((*filler)->cols - 1) && ((*filler)->map)[i][j + 1] >= 0)
-					((*filler)->map)[i][j + 1] = victim + 1;
-				if (j < ((*filler)->cols - 1) && i > 0 && ((*filler)->map)[i - 1][j + 1] >= 0)
-					((*filler)->map)[i - 1][j + 1] = victim + 1;
-				if (j < ((*filler)->cols - 1) && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j + 1] >= 0)
-					((*filler)->map)[i + 1][j + 1] = victim + 1;
-				if (j > 0 && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j - 1] >= 0)
-					((*filler)->map)[i + 1][j - 1] = victim + 1;
-				if (j > 0 && i > 0 && ((*filler)->map)[i - 1][j - 1] >= 0)
-					((*filler)->map)[i - 1][j - 1] = victim + 1;
+				if (i > 0 && ((*filler)->map)[i - 1][j] == 0)
+					((*filler)->map)[i - 1][j] = t;
+				if (j > 0 && ((*filler)->map)[i][j - 1] == 0)
+					((*filler)->map)[i][j - 1] = t;
+				if (i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j] == 0)
+					((*filler)->map)[i + 1][j] = t;
+				if (j < ((*filler)->cols - 1) && ((*filler)->map)[i][j + 1] == 0)
+					((*filler)->map)[i][j + 1] = t;
+				if (j < ((*filler)->cols - 1) && i > 0 && ((*filler)->map)[i - 1][j + 1] == 0)
+					((*filler)->map)[i - 1][j + 1] = t;
+				if (j < ((*filler)->cols - 1) && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j + 1] == 0)
+					((*filler)->map)[i + 1][j + 1] = t;
+				if (j > 0 && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j - 1] == 0)
+					((*filler)->map)[i + 1][j - 1] = t;
+				if (j > 0 && i > 0 && ((*filler)->map)[i - 1][j - 1] == 0)
+					((*filler)->map)[i - 1][j - 1] = t;
 			}
 			j++;
 		}
@@ -230,13 +232,14 @@ void	heat_map(t_filler **filler)
 	int	j;
 	int	victim;
 
-	victim = -1 * (*filler)->vs;
-	//while (a_zero((*filler)->map, (*filler)->rows, (*filler)->cols))
-	//{
+	victim = -2;
+	while (a_zero((*filler)->map, (*filler)->rows, (*filler)->cols))
+	{
 		cercle_it(filler, victim);
 		victim = (victim < 0) ? 1 : victim + 1;
-	//}
+	}
 }
+
 
 int	main(void)
 {
@@ -271,14 +274,18 @@ int	main(void)
 		heat_map(&filler);
 		init_token_size(filler);
 		filler->token = get_token(filler);
-		//	ft_putstr_fd("8 2\n", 1);
 			ft_dprintf(2, "\n");
 			k = -1;
 			while (++k < filler->rows)
 			{
 				i = 0;
 				while (++i < filler->cols)
-					ft_dprintf(2, "%d", filler->map[k][i]);
+				{
+					if (filler->map[k][i] >= 0 && filler->map[k][i] <= 9)
+						ft_dprintf(2, " %d", filler->map[k][i]);
+					else
+						ft_dprintf(2, "%d", filler->map[k][i]);
+				}
 				ft_putstr_fd("\n", 2);
 			}
 		free_filler(&filler);
