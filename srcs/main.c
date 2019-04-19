@@ -26,6 +26,32 @@ void	init_token_size(t_filler *filler)
 	free(line);
 }
 
+static void	fill_segment(int *segm, char *line, int me)
+{
+	if (me == 1)
+	{
+		if (*line == '.')
+			*segm = 0;
+		else if (*line == 'O' || *line == 'o')
+			*segm = -1;
+		else if (*line == 'X')
+			*segm = -2;
+		else
+			*segm = -3;
+	}
+	else
+	{
+		if (*line == '.')
+			*segm = 0;
+		else if (*line == 'X' || *line == 'x')
+			*segm = -1;
+		else if (*line == 'O')
+			*segm = -2;
+		else
+			*segm = -3;
+	}
+}
+
 int	*str_int(t_filler *filler, char *line)
 {
 	int	*segm;
@@ -39,28 +65,7 @@ int	*str_int(t_filler *filler, char *line)
 	j = 0;
 	while (line[++i])
 	{
-		if (filler->me == 1)
-		{
-			if (line[i] == '.')
-				segm[j] = 0;
-			else if (line[i] == 'O' || line[i] == 'o')
-				segm[j] = -1;
-			else if (line[i] == 'X')
-				segm[j] = -2;
-			else
-				segm[j] = -3;
-		}
-		else
-		{
-			if (line[i] == '.')
-				segm[j] = 0;
-			else if (line[i] == 'X' || line[i] == 'x')
-				segm[j] = -1;
-			else if (line[i] == 'O')
-				segm[j] = -2;
-			else
-				segm[j] = -3;
-		}
+		fill_segment(&segm[j], &line[i], filler->me);
 		j++;
 	}
 	return (segm);
@@ -106,6 +111,22 @@ void	real_token(char ***token, t_filler *filler)
 			free((*token)[i]);
 		}
 	}
+	j = filler->token_x;
+	while (--j >= 0)
+	{
+		i = filler->token_y - 1;
+		while (i >= 0 && (*token)[i][j] == '.')
+			i--;
+		if (i == -1)
+		{
+			i = filler->token_y;
+			while (--i >= 0)
+				(*token)[i][j] = '\0';
+			(filler->token_x)--;
+		}
+		else
+			break ;
+	}
 }
 
 char	**get_token(t_filler *filler)
@@ -119,9 +140,9 @@ char	**get_token(t_filler *filler)
 		get_next_line(0, &token[i]);
 	real_token(&token, filler);
 	ft_dprintf(2, "*token_Y: %d\t*token_X: %d\n", filler->token_y, filler->token_x);
-	i = -1;	
-	while (++i < filler->token_y)
-		ft_dprintf(2, "%s\n", token[i]);
+		i = -1;	
+		while (++i < filler->token_y)
+			ft_dprintf(2, "%s\n", token[i]);
 	return (token);
 }
 
@@ -137,7 +158,7 @@ void	free_filler(t_filler **filler)
 	}
 	i = 0;
 	free((*filler)->map);
-	while (i < (*filler)->token_y)		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	while (i < (*filler)->token_y)
 	{
 		free((*filler)->token[i]);
 		i++;

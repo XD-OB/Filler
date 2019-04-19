@@ -31,7 +31,6 @@ cols: 17
 .................
 00000000000000000
 .................
-Token_Y: 2	Token_X: 1
-*token_Y: 2	*token_X: 1
-*
-*
+Token_Y: 1	Token_X: 3
+*token_Y: 1	*token_X: 3
+***
