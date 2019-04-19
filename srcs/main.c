@@ -168,38 +168,120 @@ void	free_filler(t_filler **filler)
 	filler = NULL;
 }
 
+int	a_zero(int **tab, int size_y, int size_x)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < size_y)
+	{
+		j = 0;
+		while (j < size_x)
+		{
+			if (tab[i][j] == 0)
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+void	cercle_it(t_filler **filler, int victim)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < (*filler)->rows)
+	{
+		j = 0;
+		while (j < (*filler)->cols)
+		{
+			if (((*filler)->map)[i][j] == victim)
+			{
+				if (i > 0 && ((*filler)->map)[i - 1][j] >= 0)
+					((*filler)->map)[i - 1][j] = victim + 1;
+				if (j > 0 && ((*filler)->map)[i][j - 1] >= 0)
+					((*filler)->map)[i][j - 1] = victim + 1;
+				if (i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j] >= 0)
+					((*filler)->map)[i + 1][j] = victim + 1;
+				if (j < ((*filler)->cols - 1) && ((*filler)->map)[i][j + 1] >= 0)
+					((*filler)->map)[i][j + 1] = victim + 1;
+				if (j < ((*filler)->cols - 1) && i > 0 && ((*filler)->map)[i - 1][j + 1] >= 0)
+					((*filler)->map)[i - 1][j + 1] = victim + 1;
+				if (j < ((*filler)->cols - 1) && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j + 1] >= 0)
+					((*filler)->map)[i + 1][j + 1] = victim + 1;
+				if (j > 0 && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j - 1] >= 0)
+					((*filler)->map)[i + 1][j - 1] = victim + 1;
+				if (j > 0 && i > 0 && ((*filler)->map)[i - 1][j - 1] >= 0)
+					((*filler)->map)[i - 1][j - 1] = victim + 1;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void	heat_map(t_filler **filler)
+{
+	int	i;
+	int	j;
+	int	victim;
+
+	victim = -1 * (*filler)->vs;
+	//while (a_zero((*filler)->map, (*filler)->rows, (*filler)->cols))
+	//{
+		cercle_it(filler, victim);
+		victim = (victim < 0) ? 1 : victim + 1;
+	//}
+}
+
 int	main(void)
 {
 	t_filler	*filler;
 	char		*line;
 	int		fd;
-	int		ret;
 	int		i;
 	int		k;
 
-	filler = (t_filler*)malloc(sizeof(t_filler));
-	get_next_line(0, &line);
-	take_sides(filler, &line);
-	init_map_size(filler, line);
-		ft_dprintf(2, "rows: %d\ncols: %d\n", filler->rows, filler->cols);
-	free(line);
-	get_next_line(0, &line);
-	free(line);
-	i = 0;
-	filler->map = (int**)malloc(sizeof(int*) * filler->rows);
-	while (i < filler->rows)
-	{
+	//while (get_next_line(0, &line) > 0)
+	//{
 		get_next_line(0, &line);
-		filler->map[i] = str_int(filler, line);
-			k = -1;
-			while (++k < filler->cols)
-				ft_dprintf(2, "%d", filler->map[i][k]);
-			ft_dprintf(2, "\n%s\n", &line[4]);
+		filler = (t_filler*)malloc(sizeof(t_filler));
+		take_sides(filler, &line);
+		init_map_size(filler, line);
+			ft_dprintf(2, "rows: %d\ncols: %d\n", filler->rows, filler->cols);
 		free(line);
-		i++;
-	}
-	init_token_size(filler);
-	filler->token = get_token(filler);
-	free_filler(&filler);
+		get_next_line(0, &line);
+		free(line);
+		i = -1;
+		filler->map = (int**)malloc(sizeof(int*) * filler->rows);
+		while (++i < filler->rows)
+		{
+			get_next_line(0, &line);
+			filler->map[i] = str_int(filler, line);
+				k = -1;
+				while (++k < filler->cols)
+					ft_dprintf(2, "%d", filler->map[i][k]);
+				ft_dprintf(2, "\n%s\n", &line[4]);
+			free(line);
+		}
+		heat_map(&filler);
+		init_token_size(filler);
+		filler->token = get_token(filler);
+		//	ft_putstr_fd("8 2\n", 1);
+			ft_dprintf(2, "\n");
+			k = -1;
+			while (++k < filler->rows)
+			{
+				i = 0;
+				while (++i < filler->cols)
+					ft_dprintf(2, "%d", filler->map[k][i]);
+				ft_putstr_fd("\n", 2);
+			}
+		free_filler(&filler);
+	//}
 	return (0);
 }
