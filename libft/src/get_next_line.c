@@ -6,11 +6,11 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/17 18:19:36 by obelouch          #+#    #+#             */
-/*   Updated: 2018/10/20 22:52:07 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/19 07:33:18 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../libft.h"
 
 static	unsigned int	ft_linelen(char *tab)
 {

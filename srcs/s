@@ -1,0 +1,2 @@
+gcc -o obelouch.filler -L../libft -lft main.c
+../resources/filler_vm -f ../resources/maps/map00 -p1 ./obelouch.filler -p2 ../resources/players/carli.filler 2> new

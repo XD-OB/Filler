@@ -22,6 +22,7 @@ void	init_token_size(t_filler *filler)
 	while (ft_isdigit(line[i]))
 		i++;
 	filler->token_x = ft_atoi(&line[i]);
+		ft_dprintf(2, "Token_Y: %d\tToken_X: %d\n", filler->token_y, filler->token_x);
 	free(line);
 }
 
@@ -71,14 +72,79 @@ void	take_sides(t_filler *filler, char **line)
 	{
 		filler->me = ft_atoi(&(*line)[10]);
 		filler->vs = (filler->me == 1) ? 2 : 1;
-			ft_putstr_fd("me: ", 2);
-			ft_putnbr_fd(filler->me, 2);
-			ft_putstr_fd("\nvs: ", 2);
-			ft_putnbr_fd(filler->vs, 2);
-			ft_putchar_fd('\n', 2);
+			ft_dprintf(2, "me: %d\tvs: %d\n", filler->me, filler->vs);
 		free(*line);
 		get_next_line(0, line);
 	}
+}
+
+int	is_allpoint(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '.')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+void	real_token(char ***token, t_filler *filler)
+{
+	int	i;
+	int	j;
+
+	i = filler->token_y;
+	while (--i >= 0)
+	{
+		if (is_allpoint((*token)[i]))
+		{
+			(filler->token_y)--;
+			free((*token)[i]);
+		}
+	}
+}
+
+char	**get_token(t_filler *filler)
+{
+	char	**token;
+	int	i;
+
+	i = -1;
+	token = (char**)malloc(sizeof(char*) * filler->token_y);
+	while (++i < filler->token_y)
+		get_next_line(0, &token[i]);
+	real_token(&token, filler);
+	ft_dprintf(2, "*token_Y: %d\t*token_X: %d\n", filler->token_y, filler->token_x);
+	i = -1;	
+	while (++i < filler->token_y)
+		ft_dprintf(2, "%s\n", token[i]);
+	return (token);
+}
+
+void	free_filler(t_filler **filler)
+{
+	int	i;
+
+	i = 0;
+	while (i < (*filler)->rows)
+	{
+		free((*filler)->map[i]);
+		i++;
+	}
+	i = 0;
+	free((*filler)->map);
+	while (i < (*filler)->token_y)		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	{
+		free((*filler)->token[i]);
+		i++;
+	}
+	free((*filler)->token);
+	free(*filler);
+	filler = NULL;
 }
 
 int	main(void)
@@ -94,11 +160,7 @@ int	main(void)
 	get_next_line(0, &line);
 	take_sides(filler, &line);
 	init_map_size(filler, line);
-		ft_putstr_fd("rows: ", 2);
-		ft_putnbr_fd(filler->rows, 2);
-		ft_putstr_fd("\ncols: ", 2);
-		ft_putnbr_fd(filler->cols, 2);
-		ft_putchar_fd('\n', 2);
+		ft_dprintf(2, "rows: %d\ncols: %d\n", filler->rows, filler->cols);
 	free(line);
 	get_next_line(0, &line);
 	free(line);
@@ -110,21 +172,13 @@ int	main(void)
 		filler->map[i] = str_int(filler, line);
 			k = -1;
 			while (++k < filler->cols)
-				ft_putnbr_fd(filler->map[i][k], 2);
-			ft_putchar_fd('\n', 2);
-			//ft_putstr_fd(line, 2);
-			//ft_putchar_fd('\n', 2);
+				ft_dprintf(2, "%d", filler->map[i][k]);
+			ft_dprintf(2, "\n%s\n", &line[4]);
 		free(line);
 		i++;
 	}
 	init_token_size(filler);
-		ft_putstr_fd("token_y: ", 2);
-		ft_putnbr_fd(filler->token_y, 2);
-		ft_putstr_fd("\ntoken_x: ", 2);
-		ft_putnbr_fd(filler->token_x, 2);
-		ft_putchar_fd('\n', 2);
-	while (get_next_line(0, &line))
-	{
-	}
+	filler->token = get_token(filler);
+	free_filler(&filler);
 	return (0);
 }

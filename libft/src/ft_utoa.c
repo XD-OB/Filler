@@ -6,67 +6,30 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 05:49:26 by obelouch          #+#    #+#             */
-/*   Updated: 2018/10/08 23:18:27 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/04/17 07:13:37 by ishaimou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	void	ft_minus(char **tab, int *nbr, int *decl)
+char		*ft_utoa(size_t nbr)
 {
-	if (*nbr < 0)
+	size_t	tmp;
+	char	*res;
+	int		size;
+
+	size = 1;
+	tmp = nbr;
+	while (tmp /= 10)
+		size++;
+	if (!(res = (char*)malloc(sizeof(char) * (size + 1))))
+		return (res);
+	res[size] = '\0';
+	tmp = nbr;
+	while (size-- > 0)
 	{
-		*tab[0] = '-';
-		*nbr = -(*nbr);
-		*decl = 1;
+		res[size] = (tmp % 10) + 48;
+		tmp /= 10;
 	}
-	else
-		*decl = 0;
-}
-
-static	char	*ft_alloc(int n)
-{
-	int		i;
-	char	*tab;
-
-	i = 1;
-	tab = NULL;
-	if (n < 0)
-	{
-		n = -n;
-		i++;
-	}
-	while ((n = n / 10) >= 1)
-		i++;
-	i++;
-	tab = (char*)malloc(sizeof(char) * i);
-	return (tab);
-}
-
-char			*ft_itoa(int nb)
-{
-	int		i;
-	int		j;
-	int		dec;
-	char	*tab;
-
-	if (nb == -2147483648)
-		return (ft_strdup("-2147483648"));
-	tab = ft_alloc(nb);
-	if (tab == NULL)
-		return (NULL);
-	ft_minus(&tab, &nb, &dec);
-	j = nb;
-	i = 1;
-	while ((j = j / 10) >= 1)
-		i *= 10;
-	while (i >= 1)
-	{
-		tab[dec] = ((nb / i) + 48);
-		nb %= i;
-		i /= 10;
-		dec++;
-	}
-	tab[dec] = '\0';
-	return (tab);
+	return (res);
 }

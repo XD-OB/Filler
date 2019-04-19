@@ -14,9 +14,6 @@
 
 static	int		ft_not_c(char ch, char c)
 {
-	int		i;
-
-	i = 0;
 	if (ch == c)
 		return (0);
 	return (1);

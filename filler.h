@@ -1,6 +1,7 @@
 #ifndef	FILLER_H
 # define FILLER_H
 
+# include "./libft/ft_printf.h"
 # include "./libft/libft.h"
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -15,9 +16,7 @@ typedef struct		s_filler
 	int		cols;
 	int		token_y;
 	int		token_x;
-	int		diff_y;
-	int		diff_x;
-	char		*token;
+	char		**token;
 	int		**map;
 }			t_filler;
 
