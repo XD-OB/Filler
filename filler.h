@@ -17,6 +17,8 @@ typedef struct		s_filler
 	int		cols;
 	int		piece_y;
 	int		piece_x;
+	int		error_y;
+	int		error_x;
 	int		token_y;
 	int		token_x;
 	char		**token;

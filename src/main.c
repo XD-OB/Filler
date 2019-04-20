@@ -3,7 +3,6 @@
 void	free_tab(char ***tab, int size_y)
 {
 	int	i;
-	int	j;
 
 	i = -1;
 	while (++i < size_y)
@@ -45,21 +44,17 @@ static void	fill_segment(int *segm, char *line, int me)
 			*segm = 0;
 		else if (*line == 'O' || *line == 'o')
 			*segm = -1;
-		else if (*line == 'X')
+		else if (*line == 'X' || *line == 'x')
 			*segm = -2;
-		else
-			*segm = -3;
 	}
 	else
 	{
 		if (*line == '.')
 			*segm = 0;
 		else if (*line == 'X' || *line == 'x')
-			*segm = -1;
-		else if (*line == 'O')
 			*segm = -2;
-		else
-			*segm = -3;
+		else if (*line == 'O' || *line == 'o')
+			*segm = -1;
 	}
 }
 
@@ -268,8 +263,6 @@ void	cercle_it(t_filler **filler, int victim)
 
 void	heat_map(t_filler **filler)
 {
-	int	i;
-	int	j;
 	int	victim;
 
 	victim = -2;
@@ -290,17 +283,18 @@ int	score_plz(t_filler *filler, int y, int x)
 
 	i = -1;
 	score = 0;
+	oh_yes = 0;
 	while (++i < filler->token_y)
 	{
 		j = -1;
 		a = x;
 		while (++j < filler->token_x)
 		{
-			if (a >= filler->cols || y >= filler->rows || filler->map[y][a] == -2)
+			if (a >= filler->cols || y >= filler->rows || (filler->map[y][a] == -2 && filler->token[i][j] != '.'))
 				return (INT_MAX);
-			if (filler->map[y][a] == -1)
+			if (filler->map[y][a] == -1 && filler->token[i][j] == '*')
 				oh_yes++;
-			score += filler->map[i][j];
+			score += filler->map[y][a];
 			a++;		
 		}
 		y++;
@@ -308,28 +302,26 @@ int	score_plz(t_filler *filler, int y, int x)
 	return ((oh_yes == 1) ? score : INT_MAX);
 }
 
-void	xy_coord(t_filler *filler)
+void	xy_coord(t_filler **filler)
 {
 	int	i;
 	int	j;
-	int	x;
-	int	y;
 	int	score;
 
 	i = -1;
 	score = INT_MAX;
-	filler->x = -5;
-	filler->y = -5;
-	while (++i < filler->rows)
+	(*filler)->x = -5;
+	(*filler)->y = -5;
+	while (++i < (*filler)->rows)
 	{
 		j = -1;
-		while (++j < filler->cols)
+		while (++j < (*filler)->cols)
 		{
-			score = ft_min(score, score_plz(filler, i, j));
-			if (score < INT_MAX)
+			if (score_plz(*filler, i, j) < score)
 			{
-				filler->x = j;
-				filler->y = i;
+				(*filler)->x = j;
+				(*filler)->y = i;
+				score = score_plz(*filler, i, j);
 			}
 		}
 	}
@@ -337,35 +329,26 @@ void	xy_coord(t_filler *filler)
 
 void	output(t_filler *filler)
 {
-	char	*output;
-	char	*str_y;
-	char	*str_x;
-	int	error_y;
-	int	error_x;
+	int		y;
+	int		x;
 
-	error_y = filler->piece_y - filler->token_y;
-	error_x = filler->piece_x - filler->token_x;
-	ft_dprintf(2, "\nAM IN OUTPUT SIR :/\n");
-	xy_coord(filler);
-	str_y = ft_itoa(filler->y - error_y);
-	str_x = ft_itoa(filler->x - error_x);
-	ft_printf("%s %s\n", str_x, str_y);
-	ft_dprintf(2, "str_X: %s\tstr_Y: %s\n", str_x, str_y);
-	free(str_y);
-	free(str_x);
+	xy_coord(&filler);
+	y = filler->y - filler->piece_y + filler->token_y;
+	x = filler->x - filler->piece_x + filler->token_x;
+	ft_dprintf(1, "%d %d\n", y, x);
+	ft_dprintf(2, "X: %d\tY: %d\n", x, y);
 }
 
 int	main(void)
 {
 	t_filler	*filler;
 	char		*line;
-	int		fd;
 	int		i;
 		int		k;
 
-	//while (get_next_line(0, &line) > 0)
-	//{
-		get_next_line(0, &line);
+	while (get_next_line(0, &line) > -1)
+	{
+		//get_next_line(0, &line);
 		filler = (t_filler*)malloc(sizeof(t_filler));
 		take_sides(filler, &line);
 		init_map_size(filler, line);
@@ -388,22 +371,22 @@ int	main(void)
 		heat_map(&filler);
 		init_token_size(filler);
 		filler->token = get_token(filler);
-			//ft_putchar_fd('\n', 2);
-			//k = -1;
-			//while (++k < filler->rows)
-			//{
-			//	i = -1;
-			//	while (++i < filler->cols)
-			//	{
-			//		if (filler->map[k][i] >= 0 && filler->map[k][i] <= 9)
-			//			ft_dprintf(2, " %d", filler->map[k][i]);
-			//		else
-			//			ft_dprintf(2, "%d", filler->map[k][i]);
-			//	}
-			//	ft_putchar_fd('\n', 2);
-			//}
+			ft_putchar_fd('\n', 2);
+			k = -1;
+			while (++k < filler->rows)
+			{
+				i = -1;
+				while (++i < filler->cols)
+				{
+					if (filler->map[k][i] >= 0 && filler->map[k][i] <= 9)
+						ft_dprintf(2, " %d", filler->map[k][i]);
+					else
+						ft_dprintf(2, "%d", filler->map[k][i]);
+				}
+				ft_putchar_fd('\n', 2);
+			}
 		output(filler);
 		free_filler(&filler);
-	//}
+	}
 	return (0);
 }
