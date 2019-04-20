@@ -132,37 +132,26 @@ void	real_token(char ***token, t_filler *filler)
 	}
 }
 
-void	real_token2(char ***token, t_filler *filler)
+void	open_token(char	**token, t_filler *filler)
 {
-	char	**new_token;
-	int	start;
 	int	i;
 	int	j;
 
 	i = -1;
-	start = filler->piece_x;;
-	filler->token_y = 0;
-	while (++i < filler->piece_y)
-	{
-		if (!(is_allpoint((*token)[i])))
-		{
-			j = 0;
-			while (j < filler->piece_x && (*token)[i][j] == '.')
-				j++;
-			if (j <  start)
-				start = j;
-			filler->token_y++;
-		}
-	}
+	filler->begin_y = 0;
+	while (++i < filler->token_y)
+		if (is_allpoint(token[i]))
+			filler->begin_y++;
 	i = -1;
-	j = 0;
-	filler->token_x = filler->piece_x - start;
-	new_token = (char**)malloc(sizeof(char*) * (filler->token_y));
-	while (++i < filler->piece_y)
-		if (!(is_allpoint((*token)[i])))
-			new_token[j++] = ft_strsub((*token)[i], start, filler->token_x);
-	free_tab(token, filler->piece_y);
-	*token = new_token;
+	filler->begin_x = filler->token_x;
+	while (++i < filler->token_y)
+	{
+		j = 0;
+		while (j < filler->token_x && token[i][j] == '.')
+			j++;
+		filler->begin_x = ft_min(j, filler->begin_x);
+	}
+	ft_dprintf(2, "begin_Y: %d\tbegin_X: %d\n", filler->begin_y, filler->begin_x);
 }
 
 char	**get_token(t_filler *filler)
@@ -174,11 +163,8 @@ char	**get_token(t_filler *filler)
 	token = (char**)malloc(sizeof(char*) * filler->token_y);
 	while (++i < filler->token_y)
 		get_next_line(0, &token[i]);
-	//real_token(&token, filler);
-	filler->piece_x = filler->token_x;
-	filler->piece_y = filler->token_y;
-	//real_token2(&token, filler);
-	ft_dprintf(2, "*Piece_Y: %d\t*Piece_X: %d\n", filler->piece_y, filler->piece_x);
+	real_token(&token, filler);
+	open_token(token, filler);
 	ft_dprintf(2, "*token_Y: %d\t*token_X: %d\n", filler->token_y, filler->token_x);
 		i = -1;	
 		while (++i < filler->token_y)
@@ -275,37 +261,37 @@ void	heat_map(t_filler **filler, int victim)
 int	score_plz(t_filler *filler, int y, int x)
 {
 	int	score;
+	int	fine;
+	int	a;
 	int	i;
 	int	j;
-	int	a;
-	int	oh_yes;
 
-	i = -1;
 	score = 0;
-	oh_yes = 0;
+	fine = 0;
+	i = filler->begin_y - 1;
 	while (++i < filler->token_y)
 	{
-		j = -1;
 		a = x;
+		j = filler->begin_x - 1;
 		while (++j < filler->token_x)
 		{
 			if (a >= filler->cols || y >= filler->rows || filler->map[y][a] == -2)
 				return (INT_MAX);
 			if (filler->map[y][a] == -1 && filler->token[i][j] == '*')
-				oh_yes++;
+				fine++;
 			score += filler->map[y][a];
 			a++;		
 		}
 		y++;
 	}
-	return ((oh_yes == 1) ? score : INT_MAX);
+	return ((fine == 1) ? score : INT_MAX);
 }
 
 void	xy_coord(t_filler **filler)
 {
+	int	score;
 	int	i;
 	int	j;
-	int	score;
 
 	i = -1;
 	score = INT_MAX - 1;
@@ -332,8 +318,8 @@ void	output(t_filler *filler)
 	int		x;
 
 	xy_coord(&filler);
-	y = filler->y;// - filler->piece_y + filler->token_y;
-	x = filler->x;// - filler->piece_x + filler->token_x;
+	y = filler->y - filler->begin_y;
+	x = filler->x - filler->begin_x;
 	ft_dprintf(1, "%d %d\n", y, x);
 	ft_dprintf(2, "X: %d\tY: %d\n", x, y);
 }
