@@ -7,6 +7,7 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 # include <stdlib.h>
+# include <limits.h>
 
 typedef struct		s_filler
 {
@@ -14,10 +15,14 @@ typedef struct		s_filler
 	int		vs;
 	int		rows;
 	int		cols;
+	int		piece_y;
+	int		piece_x;
 	int		token_y;
 	int		token_x;
 	char		**token;
 	int		**map;
+	int		x;
+	int		y;
 }			t_filler;
 
 #endif

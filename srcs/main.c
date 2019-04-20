@@ -1,5 +1,16 @@
 #include "../filler.h"
 
+void	free_tab(char ***tab, int size_y)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < size_y)
+		free((*tab)[i]);
+	free(*tab);
+}
+
 void	init_map_size(t_filler *filler, char *line)
 {
 	int	i;
@@ -103,13 +114,10 @@ void	real_token(char ***token, t_filler *filler)
 	int	j;
 
 	i = filler->token_y;
-	while (--i >= 0)
+	while (--i >= 0 && (is_allpoint((*token)[i])))
 	{
-		if (is_allpoint((*token)[i]))
-		{
-			(filler->token_y)--;
-			free((*token)[i]);
-		}
+		(filler->token_y)--;
+		free((*token)[i]);
 	}
 	j = filler->token_x;
 	while (--j >= 0)
@@ -129,6 +137,39 @@ void	real_token(char ***token, t_filler *filler)
 	}
 }
 
+void	real_token2(char ***token, t_filler *filler)
+{
+	char	**new_token;
+	int	start;
+	int	i;
+	int	j;
+
+	i = -1;
+	start = filler->piece_x;;
+	filler->token_y = 0;
+	while (++i < filler->piece_y)
+	{
+		if (!(is_allpoint((*token)[i])))
+		{
+			j = 0;
+			while (j < filler->piece_x && (*token)[i][j] == '.')
+				j++;
+			if (j <  start)
+				start = j;
+			filler->token_y++;
+		}
+	}
+	i = -1;
+	j = 0;
+	filler->token_x = filler->piece_x - start;
+	new_token = (char**)malloc(sizeof(char*) * (filler->token_y));
+	while (++i < filler->piece_y)
+		if (!(is_allpoint((*token)[i])))
+			new_token[j++] = ft_strsub((*token)[i], start, filler->token_x);
+	free_tab(token, filler->piece_y);
+	*token = new_token;
+}
+
 char	**get_token(t_filler *filler)
 {
 	char	**token;
@@ -139,6 +180,10 @@ char	**get_token(t_filler *filler)
 	while (++i < filler->token_y)
 		get_next_line(0, &token[i]);
 	real_token(&token, filler);
+	filler->piece_x = filler->token_x;
+	filler->piece_y = filler->token_y;
+	real_token2(&token, filler);
+	ft_dprintf(2, "*Piece_Y: %d\t*Piece_X: %d\n", filler->piece_y, filler->piece_x);
 	ft_dprintf(2, "*token_Y: %d\t*token_X: %d\n", filler->token_y, filler->token_x);
 		i = -1;	
 		while (++i < filler->token_y)
@@ -158,12 +203,7 @@ void	free_filler(t_filler **filler)
 	}
 	i = 0;
 	free((*filler)->map);
-	while (i < (*filler)->token_y)
-	{
-		free((*filler)->token[i]);
-		i++;
-	}
-	free((*filler)->token);
+	free_tab(&((*filler)->token), (*filler)->token_y);
 	free(*filler);
 	filler = NULL;
 }
@@ -240,6 +280,80 @@ void	heat_map(t_filler **filler)
 	}
 }
 
+int	score_plz(t_filler *filler, int y, int x)
+{
+	int	score;
+	int	i;
+	int	j;
+	int	a;
+	int	oh_yes;
+
+	i = -1;
+	score = 0;
+	while (++i < filler->token_y)
+	{
+		j = -1;
+		a = x;
+		while (++j < filler->token_x)
+		{
+			if (a >= filler->cols || y >= filler->rows || filler->map[y][a] == -2)
+				return (INT_MAX);
+			if (filler->map[y][a] == -1)
+				oh_yes++;
+			score += filler->map[i][j];
+			a++;		
+		}
+		y++;
+	}
+	return ((oh_yes == 1) ? score : INT_MAX);
+}
+
+void	xy_coord(t_filler *filler)
+{
+	int	i;
+	int	j;
+	int	x;
+	int	y;
+	int	score;
+
+	i = -1;
+	score = INT_MAX;
+	filler->x = -5;
+	filler->y = -5;
+	while (++i < filler->rows)
+	{
+		j = -1;
+		while (++j < filler->cols)
+		{
+			score = ft_min(score, score_plz(filler, i, j));
+			if (score < INT_MAX)
+			{
+				filler->x = j;
+				filler->y = i;
+			}
+		}
+	}
+}
+
+void	output(t_filler *filler)
+{
+	char	*output;
+	char	*str_y;
+	char	*str_x;
+	int	error_y;
+	int	error_x;
+
+	error_y = filler->piece_y - filler->token_y;
+	error_x = filler->piece_x - filler->token_x;
+	ft_dprintf(2, "\nAM IN OUTPUT SIR :/\n");
+	xy_coord(filler);
+	str_y = ft_itoa(filler->y - error_y);
+	str_x = ft_itoa(filler->x - error_x);
+	ft_printf("%s %s\n", str_x, str_y);
+	ft_dprintf(2, "str_X: %s\tstr_Y: %s\n", str_x, str_y);
+	free(str_y);
+	free(str_x);
+}
 
 int	main(void)
 {
@@ -247,7 +361,7 @@ int	main(void)
 	char		*line;
 	int		fd;
 	int		i;
-	int		k;
+		int		k;
 
 	//while (get_next_line(0, &line) > 0)
 	//{
@@ -274,20 +388,21 @@ int	main(void)
 		heat_map(&filler);
 		init_token_size(filler);
 		filler->token = get_token(filler);
-			ft_dprintf(2, "\n");
-			k = -1;
-			while (++k < filler->rows)
-			{
-				i = 0;
-				while (++i < filler->cols)
-				{
-					if (filler->map[k][i] >= 0 && filler->map[k][i] <= 9)
-						ft_dprintf(2, " %d", filler->map[k][i]);
-					else
-						ft_dprintf(2, "%d", filler->map[k][i]);
-				}
-				ft_putstr_fd("\n", 2);
-			}
+			//ft_putchar_fd('\n', 2);
+			//k = -1;
+			//while (++k < filler->rows)
+			//{
+			//	i = -1;
+			//	while (++i < filler->cols)
+			//	{
+			//		if (filler->map[k][i] >= 0 && filler->map[k][i] <= 9)
+			//			ft_dprintf(2, " %d", filler->map[k][i]);
+			//		else
+			//			ft_dprintf(2, "%d", filler->map[k][i]);
+			//	}
+			//	ft_putchar_fd('\n', 2);
+			//}
+		output(filler);
 		free_filler(&filler);
 	//}
 	return (0);
