@@ -36,28 +36,6 @@ void	init_token_size(t_filler *filler)
 	free(line);
 }
 
-static void	fill_segment(int *segm, char *line, int me)
-{
-	if (me == 1)
-	{
-		if (*line == '.')
-			*segm = 0;
-		else if (*line == 'O' || *line == 'o')
-			*segm = -1;
-		else if (*line == 'X' || *line == 'x')
-			*segm = -2;
-	}
-	else
-	{
-		if (*line == '.')
-			*segm = 0;
-		else if (*line == 'X' || *line == 'x')
-			*segm = -2;
-		else if (*line == 'O' || *line == 'o')
-			*segm = -1;
-	}
-}
-
 int	*str_int(t_filler *filler, char *line)
 {
 	int	*segm;
@@ -71,7 +49,12 @@ int	*str_int(t_filler *filler, char *line)
 	j = 0;
 	while (line[++i])
 	{
-		fill_segment(&segm[j], &line[i], filler->me);
+		if (line[i] == '.')
+			segm[j] = 0;
+		else if (line[i] == 'O' || line[i] == 'o')
+			segm[j] = (filler->me == 1) ? -1 : -2;
+		else if (line[i] == 'X' || line[i] == 'x')
+			segm[j] = (filler->me == 1) ? -2 : -1;
 		j++;
 	}
 	return (segm);
@@ -172,7 +155,22 @@ char	**get_token(t_filler *filler)
 	return (token);
 }
 
-void	free_filler(t_filler **filler)
+void	free_filler(t_filler *filler)
+{
+	int	i;
+
+	i = 0;
+	while (i < filler->rows)
+	{
+		free(filler->map[i]);
+		i++;
+	}
+	i = 0;
+	free(filler->map);
+	free_tab(&(filler->token), filler->token_y);
+}
+
+void	ultime_free_filler(t_filler **filler)
 {
 	int	i;
 
@@ -186,7 +184,7 @@ void	free_filler(t_filler **filler)
 	free((*filler)->map);
 	free_tab(&((*filler)->token), (*filler)->token_y);
 	free(*filler);
-	filler = NULL;
+	*filler = NULL;
 }
 
 int	a_zero(int **tab, int size_y, int size_x)
@@ -209,51 +207,49 @@ int	a_zero(int **tab, int size_y, int size_x)
 	return (0);
 }
 
-void	cercle_it(t_filler **filler, int i, int j, int t)
+
+static void		heatmap_engine(t_filler **filler, int y, int x, int victim)
 {
-	if (i > 0 && ((*filler)->map)[i - 1][j] == 0)
-		((*filler)->map)[i - 1][j] = t;
-	if (j > 0 && ((*filler)->map)[i][j - 1] == 0)
-		((*filler)->map)[i][j - 1] = t;
-	if (i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j] == 0)
-		((*filler)->map)[i + 1][j] = t;
-	if (j < ((*filler)->cols - 1) && ((*filler)->map)[i][j + 1] == 0)
-		((*filler)->map)[i][j + 1] = t;
-	if (j < ((*filler)->cols - 1) && i > 0 && ((*filler)->map)[i - 1][j + 1] == 0)
-		((*filler)->map)[i - 1][j + 1] = t;
-	if (j < ((*filler)->cols - 1) && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j + 1] == 0)
-		((*filler)->map)[i + 1][j + 1] = t;
-	if (j > 0 && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j - 1] == 0)
-		((*filler)->map)[i + 1][j - 1] = t;
-	if (j > 0 && i > 0 && ((*filler)->map)[i - 1][j - 1] == 0)
-		((*filler)->map)[i - 1][j - 1] = t;
+	int		siege;
+
+	siege = (victim == -2) ? 1 : victim + 1;
+	if (x < (*filler)->cols - 1 && (*filler)->map[y][x + 1] == victim)
+		(*filler)->map[y][x] = siege;
+	if (x > 0 && (*filler)->map[y][x - 1] == victim)
+		(*filler)->map[y][x] = siege;
+	if (y < (*filler)->rows - 1 && (*filler)->map[y + 1][x] == victim)
+		(*filler)->map[y][x] = siege;
+	if (y > 0 && (*filler)->map[y - 1][x] == victim)
+		(*filler)->map[y][x] = siege;
+	if (y > 0 && x > 0 && (*filler)->map[y - 1][x - 1] == victim)
+		(*filler)->map[y][x] = siege;
+	if (y < (*filler)->rows - 1 && x < (*filler)->cols - 1
+			&& (*filler)->map[y + 1][x + 1] == victim)
+		(*filler)->map[y][x] = siege;
+	if (y < (*filler)->rows - 1 && x > 0 && (*filler)->map[y + 1][x - 1] == victim)
+		(*filler)->map[y][x] = siege;
+	if (y > 0 && x < (*filler)->cols - 1 && (*filler)->map[y - 1][x + 1] == victim)
+		(*filler)->map[y][x] = siege;
 }
 
-void	heat_map(t_filler **filler, int victim)
+void			heat_map(t_filler **filler)
 {
+	int	victim;
+	int	wave;
 	int	i;
 	int	j;
-	int	tag;
 
-	i = -1;
-	if (a_zero((*filler)->map, (*filler)->rows, (*filler)->cols))
+	wave = -1;
+	while (++wave < (*filler)->cols)
 	{
+		i = -1;
+		victim = (wave == 0) ? -2 : wave;
 		while (++i < (*filler)->rows)
 		{
 			j = -1;
 			while (++j < (*filler)->cols)
-			{
-				if ((*filler)->map[i][j] == victim)
-				{
-					if (victim > 0)
-						tag = victim + 1;
-					else
-						tag = 1;
-					cercle_it(filler, i, j, tag);
-					heat_map(filler, tag);
-					return ;
-				}
-			}
+				if ((*filler)->map[i][j] == 0)
+					heatmap_engine(filler, i, j, victim);
 		}
 	}
 }
@@ -331,9 +327,9 @@ int	main(void)
 	int		i;
 		int		k;
 
+	filler = (t_filler*)malloc(sizeof(t_filler));
 	while (get_next_line(0, &line) > -1)
 	{
-		filler = (t_filler*)malloc(sizeof(t_filler));
 		take_sides(filler, &line);
 		init_map_size(filler, line);
 			ft_dprintf(2, "rows: %d\ncols: %d\n", filler->rows, filler->cols);
@@ -352,7 +348,7 @@ int	main(void)
 				ft_dprintf(2, "\n%s\n", &line[4]);
 			free(line);
 		}
-		heat_map(&filler, -2);
+		heat_map(&filler);
 		init_token_size(filler);
 		filler->token = get_token(filler);
 			ft_putchar_fd('\n', 2);
@@ -370,7 +366,8 @@ int	main(void)
 				ft_putchar_fd('\n', 2);
 			}
 		output(filler);
-		free_filler(&filler);
+		free_filler(filler);
 	}
+	ultime_free_filler(&filler);
 	return (0);
 }
