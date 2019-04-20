@@ -174,10 +174,10 @@ char	**get_token(t_filler *filler)
 	token = (char**)malloc(sizeof(char*) * filler->token_y);
 	while (++i < filler->token_y)
 		get_next_line(0, &token[i]);
-	real_token(&token, filler);
+	//real_token(&token, filler);
 	filler->piece_x = filler->token_x;
 	filler->piece_y = filler->token_y;
-	real_token2(&token, filler);
+	//real_token2(&token, filler);
 	ft_dprintf(2, "*Piece_Y: %d\t*Piece_X: %d\n", filler->piece_y, filler->piece_x);
 	ft_dprintf(2, "*token_Y: %d\t*token_X: %d\n", filler->token_y, filler->token_x);
 		i = -1;	
@@ -223,53 +223,52 @@ int	a_zero(int **tab, int size_y, int size_x)
 	return (0);
 }
 
-void	cercle_it(t_filler **filler, int victim)
+void	cercle_it(t_filler **filler, int i, int j, int t)
+{
+	if (i > 0 && ((*filler)->map)[i - 1][j] == 0)
+		((*filler)->map)[i - 1][j] = t;
+	if (j > 0 && ((*filler)->map)[i][j - 1] == 0)
+		((*filler)->map)[i][j - 1] = t;
+	if (i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j] == 0)
+		((*filler)->map)[i + 1][j] = t;
+	if (j < ((*filler)->cols - 1) && ((*filler)->map)[i][j + 1] == 0)
+		((*filler)->map)[i][j + 1] = t;
+	if (j < ((*filler)->cols - 1) && i > 0 && ((*filler)->map)[i - 1][j + 1] == 0)
+		((*filler)->map)[i - 1][j + 1] = t;
+	if (j < ((*filler)->cols - 1) && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j + 1] == 0)
+		((*filler)->map)[i + 1][j + 1] = t;
+	if (j > 0 && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j - 1] == 0)
+		((*filler)->map)[i + 1][j - 1] = t;
+	if (j > 0 && i > 0 && ((*filler)->map)[i - 1][j - 1] == 0)
+		((*filler)->map)[i - 1][j - 1] = t;
+}
+
+void	heat_map(t_filler **filler, int victim)
 {
 	int	i;
 	int	j;
-	int	t;
+	int	tag;
 
-	i = 0;
-	t = (victim < 0) ? 1 : victim + 1;
-	while (i < (*filler)->rows)
+	i = -1;
+	if (a_zero((*filler)->map, (*filler)->rows, (*filler)->cols))
 	{
-		j = 0;
-		while (j < (*filler)->cols)
+		while (++i < (*filler)->rows)
 		{
-			if (((*filler)->map)[i][j] == victim)
+			j = -1;
+			while (++j < (*filler)->cols)
 			{
-				if (i > 0 && ((*filler)->map)[i - 1][j] == 0)
-					((*filler)->map)[i - 1][j] = t;
-				if (j > 0 && ((*filler)->map)[i][j - 1] == 0)
-					((*filler)->map)[i][j - 1] = t;
-				if (i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j] == 0)
-					((*filler)->map)[i + 1][j] = t;
-				if (j < ((*filler)->cols - 1) && ((*filler)->map)[i][j + 1] == 0)
-					((*filler)->map)[i][j + 1] = t;
-				if (j < ((*filler)->cols - 1) && i > 0 && ((*filler)->map)[i - 1][j + 1] == 0)
-					((*filler)->map)[i - 1][j + 1] = t;
-				if (j < ((*filler)->cols - 1) && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j + 1] == 0)
-					((*filler)->map)[i + 1][j + 1] = t;
-				if (j > 0 && i < ((*filler)->rows - 1) && ((*filler)->map)[i + 1][j - 1] == 0)
-					((*filler)->map)[i + 1][j - 1] = t;
-				if (j > 0 && i > 0 && ((*filler)->map)[i - 1][j - 1] == 0)
-					((*filler)->map)[i - 1][j - 1] = t;
+				if ((*filler)->map[i][j] == victim)
+				{
+					if (victim > 0)
+						tag = victim + 1;
+					else
+						tag = 1;
+					cercle_it(filler, i, j, tag);
+					heat_map(filler, tag);
+					return ;
+				}
 			}
-			j++;
 		}
-		i++;
-	}
-}
-
-void	heat_map(t_filler **filler)
-{
-	int	victim;
-
-	victim = -2;
-	while (a_zero((*filler)->map, (*filler)->rows, (*filler)->cols))
-	{
-		cercle_it(filler, victim);
-		victim = (victim < 0) ? 1 : victim + 1;
 	}
 }
 
@@ -290,7 +289,7 @@ int	score_plz(t_filler *filler, int y, int x)
 		a = x;
 		while (++j < filler->token_x)
 		{
-			if (a >= filler->cols || y >= filler->rows || (filler->map[y][a] == -2 && filler->token[i][j] != '.'))
+			if (a >= filler->cols || y >= filler->rows || filler->map[y][a] == -2)
 				return (INT_MAX);
 			if (filler->map[y][a] == -1 && filler->token[i][j] == '*')
 				oh_yes++;
@@ -309,7 +308,7 @@ void	xy_coord(t_filler **filler)
 	int	score;
 
 	i = -1;
-	score = INT_MAX;
+	score = INT_MAX - 1;
 	(*filler)->x = -5;
 	(*filler)->y = -5;
 	while (++i < (*filler)->rows)
@@ -317,7 +316,7 @@ void	xy_coord(t_filler **filler)
 		j = -1;
 		while (++j < (*filler)->cols)
 		{
-			if (score_plz(*filler, i, j) < score)
+			if (score_plz(*filler, i, j) <= score)
 			{
 				(*filler)->x = j;
 				(*filler)->y = i;
@@ -333,8 +332,8 @@ void	output(t_filler *filler)
 	int		x;
 
 	xy_coord(&filler);
-	y = filler->y - filler->piece_y + filler->token_y;
-	x = filler->x - filler->piece_x + filler->token_x;
+	y = filler->y;// - filler->piece_y + filler->token_y;
+	x = filler->x;// - filler->piece_x + filler->token_x;
 	ft_dprintf(1, "%d %d\n", y, x);
 	ft_dprintf(2, "X: %d\tY: %d\n", x, y);
 }
@@ -348,7 +347,6 @@ int	main(void)
 
 	while (get_next_line(0, &line) > -1)
 	{
-		//get_next_line(0, &line);
 		filler = (t_filler*)malloc(sizeof(t_filler));
 		take_sides(filler, &line);
 		init_map_size(filler, line);
@@ -368,7 +366,7 @@ int	main(void)
 				ft_dprintf(2, "\n%s\n", &line[4]);
 			free(line);
 		}
-		heat_map(&filler);
+		heat_map(&filler, -2);
 		init_token_size(filler);
 		filler->token = get_token(filler);
 			ft_putchar_fd('\n', 2);
