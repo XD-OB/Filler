@@ -25,4 +25,13 @@ typedef struct		s_filler
 	int		y;
 }			t_filler;
 
+void			xy_coord(t_filler **filler);
+void			heat_map(t_filler **filler);
+int			is_allpoint(char *str);
+void			ultime_free_filler(t_filler **filler);
+void			free_filler(t_filler *filler);
+void			free_tab(char ***tab, int size_y);
+char			**get_token(t_filler *filler);
+void			init_token_size(t_filler *filler);
+
 #endif

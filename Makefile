@@ -12,7 +12,7 @@
 
 NAME = obelouch.filler
 
-FILLER = main
+FILLER = filler tools heatmap tokens
 
 OBJ = *.o
 
