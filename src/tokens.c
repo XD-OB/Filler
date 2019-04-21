@@ -1,6 +1,6 @@
 #include "../filler.h"
 
-void		init_token_size(t_filler *filler)
+static void	init_token_size(t_filler *filler)
 {
 	int	i;
 	char	*line;
@@ -11,7 +11,7 @@ void		init_token_size(t_filler *filler)
 	while (ft_isdigit(line[i]))
 		i++;
 	filler->token_x = ft_atoi(&line[i]);
-		ft_dprintf(2, "Token_Y: %d\tToken_X: %d\n", filler->token_y, filler->token_x);
+	//	ft_dprintf(2, "Token_Y: %d\tToken_X: %d\n", filler->token_y, filler->token_x);
 	free(line);
 }
 
@@ -63,7 +63,7 @@ static void	open_token(char	**token, t_filler *filler)
 			j++;
 		filler->begin_x = ft_min(j, filler->begin_x);
 	}
-	ft_dprintf(2, "begin_Y: %d\tbegin_X: %d\n", filler->begin_y, filler->begin_x);
+	//	ft_dprintf(2, "begin_Y: %d\tbegin_X: %d\n", filler->begin_y, filler->begin_x);
 }
 
 char		**get_token(t_filler *filler)
@@ -72,14 +72,15 @@ char		**get_token(t_filler *filler)
 	int	i;
 
 	i = -1;
+	init_token_size(filler);
 	token = (char**)malloc(sizeof(char*) * filler->token_y);
 	while (++i < filler->token_y)
 		get_next_line(0, &token[i]);
 	real_token(&token, filler);
 	open_token(token, filler);
-	ft_dprintf(2, "*token_Y: %d\t*token_X: %d\n", filler->token_y, filler->token_x);
-	i = -1;	
-	while (++i < filler->token_y)
-		ft_dprintf(2, "%s\n", token[i]);
+	//	ft_dprintf(2, "*token_Y: %d\t*token_X: %d\n", filler->token_y, filler->token_x);
+	//	i = -1;	
+	//	while (++i < filler->token_y)
+	//		ft_dprintf(2, "%s\n", token[i]);
 	return (token);
 }

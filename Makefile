@@ -12,11 +12,9 @@
 
 NAME = obelouch.filler
 
-FILLER = filler tools heatmap tokens
+FILLER = filler tools heatmap tokens map
 
 OBJ = *.o
-
-HEADER = filler.h
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -26,7 +24,7 @@ all : $(NAME)
 
 $(NAME) :
 	@make -C ./libft re
-	@gcc -c $(SRC) $(FLAGS) -I ./$(HEADER)
+	@gcc -c $(SRC) $(FLAGS) -I ./
 	@gcc -o $(NAME) $(OBJ) -L ./libft -lft
 	@mv $(OBJ) src/.
 

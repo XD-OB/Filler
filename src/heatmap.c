@@ -1,4 +1,4 @@
-#include "../filler.h"
+#include "filler.h"
 
 static void	heatmap_engine(t_filler **filler, int y, int x, int victim)
 {
