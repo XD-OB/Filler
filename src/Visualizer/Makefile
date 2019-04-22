@@ -9,7 +9,7 @@ all: $(NAME)
 $(NAME):
 	@make -C ../../libft re
 	@gcc -c $(SRC) 
-	@gcc -o $(NAME) $(OBJ) -L ../../libft/ -lft -lSDL -lSDL_image
+	@gcc -o $(NAME) $(OBJ) -L ../../libft/ -lft -lSDL -lSDL_image -lSDL_ttf
 
 
 clean:

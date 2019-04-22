@@ -62,37 +62,14 @@ SDL_Surface	*put_win_p1(SDL_Surface *screen, char *p1, char *p2)
 	SDL_Flip(screen);
 }
 
-void	update_screen(SDL_Surface *screen)
+void	update_screen(SDL_Surface *screen, int height, int width)
 {
 	SDL_Event	event;
 	SDL_Surface	*win;
 	char	*line;
-	char	*p2;
-	char	*p1;
-	int	width;
-	int	height;
 	int	i;
 	int	j;
 
-	i = -1;
-	while (++i < 6)
-	{
-		get_next_line(0, &line);
-		free(line);
-	}
-	p1 = player_name();
-	get_next_line(0, &line);
-	free(line);
-	p2 = player_name();
-	get_next_line(0, &line);
-	i = -1;
-	while (line[i] != ' ')
-		i++;
-	height = ft_atoi(&line[++i]);
-	while (isdigit(line[i]))
-		i++;
-	width = ft_atoi(&line[i]);
-	free(line);
 	while (get_next_line(0, &line) > 0)
 	{
 		SDL_PollEvent(&event);
@@ -161,6 +138,7 @@ void	free_quit(SDL_Surface *a, SDL_Surface *b, SDL_Surface *c)
 	SDL_FreeSurface(a);
 	SDL_FreeSurface(b);
 	SDL_FreeSurface(c);
+	TTF_Quit();
 	SDL_Quit();
 }
 
@@ -170,21 +148,46 @@ int	main(void)
 	SDL_Surface	*header;
 	SDL_Surface	*bk_img;
 	SDL_Surface	*arena;
-	//SDL_Event	event;
+	SDL_Event	event;
+	char		*line;
+	int		width;
+	int		height;
+	char		*p1;
+	char		*p2;
+	int		i;
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)
 		error((char*)SDL_GetError);
-	//if (TTF_init() == -1)
-	//	error(TTF_GetError());
+	if (TTF_Init() == -1)
+		error(TTF_GetError());
 	if (!(screen = SDL_SetVideoMode(1400, 1000, 32, SDL_SWSURFACE)))
 		error((char*)SDL_GetError);
 	SDL_WM_SetIcon(IMG_Load("./Visualizer/img/icon.png"), NULL);
 	SDL_WM_SetCaption("Bring Your Filler And Let's Fight!", "Filler Fights");
+	i = -1;
+	while (++i < 6)
+	{
+		get_next_line(0, &line);
+		free(line);
+	}
+	p1 = player_name();
+	get_next_line(0, &line);
+	free(line);
+	p2 = player_name();
+	get_next_line(0, &line);
+	i = -1;
+	while (line[i] != ' ')
+		i++;
+	height = ft_atoi(&line[++i]);
+	while (isdigit(line[i]))
+		i++;
+	width = ft_atoi(&line[i]);
+	free(line);
 	bk_img = put_background(screen);
 	header = put_header(screen);
 	arena = put_arena(screen);
 	SDL_Flip(screen);
-	update_screen(screen);
+	update_screen(screen, height, width);
 	wait_close();
 
 	free_quit(bk_img, header, arena);
