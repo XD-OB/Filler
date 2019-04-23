@@ -1,5 +1,19 @@
 #include "visual.h"
 
+void	space_pause(void)
+{
+	SDL_Event	event;
+	int		pass;
+
+	pass = 1;
+	while (pass)
+	{
+		SDL_WaitEvent(&event);
+		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
+			pass = 0;
+	}
+}
+
 char	*player_name(void)
 {
 	char	*line;
@@ -91,6 +105,8 @@ void	update_screen(SDL_Surface *screen, int height, int width)
 		{
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				exit(1);
+			if (event.key.keysym.sym == SDLK_SPACE)
+				space_pause();
 		}
 		get_next_line(0, &line);
 		while (ft_strncmp(line, "Plateau", 4) && ft_strncmp(line, "==", 2))
@@ -148,6 +164,65 @@ void	free_players(SDL_Surface *a, SDL_Surface *b)
 	SDL_FreeSurface(b);
 }
 
+void	map_size(int *height, int *width)
+{
+	char	*line;
+	int	i;
+
+	i = -1;
+	get_next_line(0, &line);
+	while (line[i] != ' ')
+		i++;
+	i++;
+	*height = ft_atoi(&line[i]);
+	while (isdigit(line[i]))
+		i++;
+	*width = ft_atoi(&line[i]);
+	free(line);
+}
+
+void	put_pieces(SDL_Surface *screen, SDL_Surface **bk_img, SDL_Surface **header, SDL_Surface **arena)
+{
+	*bk_img = put_background(screen);
+	*header = put_header(screen);
+	*arena = put_arena(screen);
+}
+
+void	display_players(SDL_Surface *screen, SDL_Surface **text_p1, SDL_Surface **text_p2)
+{
+	SDL_Color	color_p1 = {0,0,255};
+	SDL_Color	color_p2 = {0,255,0};
+	SDL_Rect	pos_p;
+	TTF_Font	*font;
+	char		*line;
+	char		*p;
+	int		i;
+
+	i = -1;
+	font = TTF_OpenFont("./Visualizer/Fonts/nadiasofia.ttf", 80);
+	while (++i < 6)
+	{
+		get_next_line(0, &line);
+		free(line);
+	}
+	p = player_name();
+	pos_p.x = 80;
+	pos_p.y = 0;
+	*text_p1 = TTF_RenderText_Blended(font, p, color_p1);
+	SDL_BlitSurface(*text_p1, NULL, screen, &pos_p);
+	get_next_line(0, &line);
+	free(line);
+	free(p);
+	p = player_name();
+	pos_p.x = 1380 - ((int)ft_strlen(p) * 50);
+	pos_p.y = 0;
+	*text_p2 = TTF_RenderText_Blended(font, p, color_p2);
+	SDL_BlitSurface(*text_p2, NULL, screen, &pos_p);
+	SDL_Flip(screen);
+	TTF_CloseFont(font);
+	free(p);
+}
+
 int	main(void)
 {
 	SDL_Surface	*screen;
@@ -158,14 +233,6 @@ int	main(void)
 	char		*line;
 	int		width;
 	int		height;
-	char		*p1;
-	char		*p2;
-	int		i;
-	SDL_Color	color_p1 = {0,0,255};
-	SDL_Color	color_p2 = {0,255,0};
-	SDL_Rect	pos_p1;
-	SDL_Rect	pos_p2;
-	TTF_Font	*font;
 	SDL_Surface	*text_p1;
 	SDL_Surface	*text_p2;
 
@@ -175,46 +242,14 @@ int	main(void)
 		error(TTF_GetError());
 	if (!(screen = SDL_SetVideoMode(1400, 1000, 32, SDL_SWSURFACE)))
 		error((char*)SDL_GetError);
-	font = TTF_OpenFont("./Visualizer/Fonts/nadiasofia.ttf", 80);
 	SDL_WM_SetIcon(IMG_Load("./Visualizer/img/icon.png"), NULL);
 	SDL_WM_SetCaption("Bring Your Filler And Let's Fight!", "Filler Fights");
-	bk_img = put_background(screen);
-	header = put_header(screen);
-	arena = put_arena(screen);
-	i = -1;
-	while (++i < 6)
-	{
-		get_next_line(0, &line);
-		free(line);
-	}
-	p1 = player_name();
-	get_next_line(0, &line);
-	free(line);
-	p2 = player_name();
-	get_next_line(0, &line);
-	i = -1;
-	pos_p1.x = 80;
-	pos_p1.y = 0;
-	pos_p2.x = 1380 - ((int)ft_strlen(p2) * 50);
-	pos_p2.y = 0;
-	text_p1 = TTF_RenderText_Blended(font, p1, color_p1);
-	text_p2 = TTF_RenderText_Blended(font, p2, color_p2);
-	SDL_BlitSurface(text_p1, NULL, screen, &pos_p1);
-	SDL_BlitSurface(text_p2, NULL, screen, &pos_p2);
-	SDL_Flip(screen);	
-	while (line[i] != ' ')
-		i++;
-	height = ft_atoi(&line[++i]);
-	while (isdigit(line[i]))
-		i++;
-	width = ft_atoi(&line[i]);
-	free(line);
+	put_pieces(screen, &bk_img, &header, &arena);
+	display_players(screen, &text_p1, &text_p2);
+	map_size(&height, &width);
 	SDL_Flip(screen);
 	update_screen(screen, height, width);
-
-	TTF_CloseFont(font);
 	wait_close();
-
 	free_players(text_p1, text_p2);
 	free_quit(bk_img, header, arena);
 	return (EXIT_SUCCESS);
