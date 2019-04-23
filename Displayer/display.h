@@ -13,7 +13,7 @@
 # define ICON_TITLE "Bring Your Filler And Let's Fight!"
 # define ICON_ATTR "Filler Fights"
 
-# define BK_IMG "./Displayer/img/arena.jpg"
+# define BK_IMG "./Displayer/img/war.jpg"
 
 # define FONT_TYPE "./Displayer/Fonts/nadiasofia.ttf"
 # define FONT_SIZE 80

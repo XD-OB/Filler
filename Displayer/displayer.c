@@ -101,6 +101,7 @@ void	update_screen(t_visual *v)
 			return ;
 		}
 		free(line);
+		SDL_Flip(v->screen);
 	}
 }
 
