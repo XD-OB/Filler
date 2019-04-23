@@ -1,16 +1,40 @@
 #include "display.h"
 
-void	space_pause(void)
+
+void	pas_pause(void)
 {
-	SDL_Event	event;
+	SDL_Event 	event;
 	int		pass;
 
 	pass = 1;
 	while (pass)
 	{
 		SDL_WaitEvent(&event);
-		if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
-			pass = 0;
+		if (event.type == SDL_KEYDOWN)
+		{
+			if (event.key.keysym.sym == SDLK_SPACE)
+				pass = 0;
+			if (event.key.keysym.sym == SDLK_ESCAPE)
+				exit(1);
+		}
+	}
+}
+
+void	space_pause(SDL_Event *event)
+{
+	int		pass;
+
+	pass = 1;
+	while (pass)
+	{
+		SDL_WaitEvent(event);
+		if (event->type == SDL_KEYDOWN)
+		{
+			if (event->key.keysym.sym == SDLK_o)
+				pass = 0;
+			if (event->key.keysym.sym == SDLK_ESCAPE)
+				exit(1);
+		}
 	}
 }
 
@@ -86,7 +110,9 @@ void	update_screen(t_visual *v)
 			if (event.key.keysym.sym == SDLK_ESCAPE)
 				exit(1);
 			if (event.key.keysym.sym == SDLK_p)
-				space_pause();
+				space_pause(&event);
+			if (event.key.keysym.sym == SDLK_SPACE)
+				pas_pause();
 		}
 		get_next_line(0, &line);
 		while (ft_strncmp(line, "Plateau", 4) && ft_strncmp(line, "==", 2))
