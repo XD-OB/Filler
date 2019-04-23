@@ -142,6 +142,12 @@ void	free_quit(SDL_Surface *a, SDL_Surface *b, SDL_Surface *c)
 	SDL_Quit();
 }
 
+void	free_players(SDL_Surface *a, SDL_Surface *b)
+{
+	SDL_FreeSurface(a);
+	SDL_FreeSurface(b);
+}
+
 int	main(void)
 {
 	SDL_Surface	*screen;
@@ -155,6 +161,13 @@ int	main(void)
 	char		*p1;
 	char		*p2;
 	int		i;
+	SDL_Color	color_p1 = {0,0,255};
+	SDL_Color	color_p2 = {0,255,0};
+	SDL_Rect	pos_p1;
+	SDL_Rect	pos_p2;
+	TTF_Font	*font;
+	SDL_Surface	*text_p1;
+	SDL_Surface	*text_p2;
 
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)
 		error((char*)SDL_GetError);
@@ -162,8 +175,12 @@ int	main(void)
 		error(TTF_GetError());
 	if (!(screen = SDL_SetVideoMode(1400, 1000, 32, SDL_SWSURFACE)))
 		error((char*)SDL_GetError);
+	font = TTF_OpenFont("./Visualizer/Fonts/nadiasofia.ttf", 80);
 	SDL_WM_SetIcon(IMG_Load("./Visualizer/img/icon.png"), NULL);
 	SDL_WM_SetCaption("Bring Your Filler And Let's Fight!", "Filler Fights");
+	bk_img = put_background(screen);
+	header = put_header(screen);
+	arena = put_arena(screen);
 	i = -1;
 	while (++i < 6)
 	{
@@ -176,6 +193,15 @@ int	main(void)
 	p2 = player_name();
 	get_next_line(0, &line);
 	i = -1;
+	pos_p1.x = 80;
+	pos_p1.y = 0;
+	pos_p2.x = 1380 - ((int)ft_strlen(p2) * 50);
+	pos_p2.y = 0;
+	text_p1 = TTF_RenderText_Blended(font, p1, color_p1);
+	text_p2 = TTF_RenderText_Blended(font, p2, color_p2);
+	SDL_BlitSurface(text_p1, NULL, screen, &pos_p1);
+	SDL_BlitSurface(text_p2, NULL, screen, &pos_p2);
+	SDL_Flip(screen);	
 	while (line[i] != ' ')
 		i++;
 	height = ft_atoi(&line[++i]);
@@ -183,13 +209,13 @@ int	main(void)
 		i++;
 	width = ft_atoi(&line[i]);
 	free(line);
-	bk_img = put_background(screen);
-	header = put_header(screen);
-	arena = put_arena(screen);
 	SDL_Flip(screen);
 	update_screen(screen, height, width);
+
+	TTF_CloseFont(font);
 	wait_close();
 
+	free_players(text_p1, text_p2);
 	free_quit(bk_img, header, arena);
 	return (EXIT_SUCCESS);
 }
