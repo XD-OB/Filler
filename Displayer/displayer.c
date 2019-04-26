@@ -38,31 +38,26 @@ void	space_pause(SDL_Event *event)
 	}
 }
 
-void	draw_it(t_visual *v, char *str, int level)
+void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 {
-	int		h_block;
-	int		w_block;
-	SDL_Surface	*block;
 	SDL_Rect	pos;
 	int		i;
 
 	i = -1;
-	h_block = 600 / (v->height - 1) - 4;
-	w_block = 600 / (v->width - 1) - 4;
 	while (++i < v->width)
 	{
 		if (str[i] != '.')
 		{
-			block = SDL_CreateRGBSurface(SDL_HWSURFACE, w_block, h_block, 32, 0, 0, 0, 0);
-			pos.y = level * (h_block + 2) + 200;
-			pos.x = i * (w_block + 2) + 401;
+			v->blocks[level * v->width + i] = SDL_CreateRGBSurface(SDL_HWSURFACE, BLOCK(v->width), BLOCK(v->height), 32, 0, 0, 0, 0);
+			pos.y = level * (BLOCK(v->height) + 2) + 200;
+			pos.x = i * (BLOCK(v->width) + 2) + 401;
 			if (str[i] == 'X')
-				SDL_FillRect(block, NULL, SDL_MapRGB(v->screen->format, 0, 255, 0));
+				SDL_FillRect(block[level * v->width + i],  NULL, SDL_MapRGB(v->screen->format, 0, 255, 0));
 			else if (str[i] == 'O')
-				SDL_FillRect(block, NULL, SDL_MapRGB(v->screen->format, 0, 0, 255));
+				SDL_FillRect(block[level * v->width + i], NULL, SDL_MapRGB(v->screen->format, 0, 0, 255));
 			else
-				SDL_FillRect(block, NULL, SDL_MapRGB(v->screen->format, 255, 0, 0));
-			SDL_BlitSurface(block, NULL, v->screen, &pos);
+				SDL_FillRect(block[level * v->width + i], NULL, SDL_MapRGB(v->screen->format, 255, 0, 0));
+			SDL_BlitSurface(block[level * v->width + i], NULL, v->screen, &pos);
 			SDL_Flip(v->screen);
 		}
 	}
@@ -89,6 +84,8 @@ void	update_screen(t_visual *v)
 	int		i;
 	int		j;
 
+	i = -1;
+	v->blocks = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * (v->width * v->height));
 	while (get_next_line(0, &line) > 0)
 	{
 		SDL_PollEvent(&event);
@@ -100,7 +97,7 @@ void	update_screen(t_visual *v)
 			get_next_line(0, &line);
 			while (line[j] != ' ')
 				j++;
-			draw_it(v, &line[++j], i);
+			draw_it(v, &line[++j], i, v->blocks);
 			free(line);
 		}
 		if (event.type == SDL_QUIT)

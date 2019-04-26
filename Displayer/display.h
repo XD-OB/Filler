@@ -9,6 +9,8 @@
 # define WIN_WIDTH 1400
 # define WIN_HEIGHT 1000
 
+# define BLOCK(x) (600 / (x - 1) - 4)
+
 # define ICON_IMG "./Displayer/img/icon.png"
 # define ICON_TITLE "Bring Your Filler And Let's Fight!"
 # define ICON_ATTR "Filler Fights"
@@ -24,6 +26,7 @@ typedef struct		s_visual
 	SDL_Surface	*header;
 	SDL_Surface	*bk_img;
 	SDL_Surface	*arena;
+	SDL_Surface	**blocks;
 	int		width;
 	int		height;
 	SDL_Surface	*text_p1;

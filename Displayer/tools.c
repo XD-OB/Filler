@@ -8,6 +8,14 @@ void	error(char *error)
 
 void	free_all(t_visual **visual)
 {
+	int	i;
+
+	i = -1;
+	while (++i < (*visual)->height * (*visual)->width)
+	{
+		if ((*visual)->blocks[i])
+			SDL_FreeSurface((*visual)->blocks[i]);
+	}
 	SDL_FreeSurface((*visual)->arena);
 	SDL_FreeSurface((*visual)->bk_img);
 	SDL_FreeSurface((*visual)->header);
