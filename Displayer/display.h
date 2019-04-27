@@ -31,6 +31,7 @@ typedef struct		s_visual
 	int		height;
 	SDL_Surface	*text_p1;
 	SDL_Surface	*text_p2;
+	SDL_Surface	*win;
 	char		*player1;
 	char		*player2;
 	SDL_Color	color_p1;
@@ -41,5 +42,7 @@ void			put_pieces(t_visual *visual);
 void			free_all(t_visual **visual);
 void			error(char *error);
 char			*player_name(void);
+void			space_pause(SDL_Event *event);
+void			pas_pause(void);
 
 #endif

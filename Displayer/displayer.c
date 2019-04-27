@@ -1,43 +1,5 @@
 #include "display.h"
 
-
-void	pas_pause(void)
-{
-	SDL_Event 	event;
-	int		pass;
-
-	pass = 1;
-	while (pass)
-	{
-		SDL_WaitEvent(&event);
-		if (event.type == SDL_KEYDOWN)
-		{
-			if (event.key.keysym.sym == SDLK_SPACE)
-				pass = 0;
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-				exit(1);
-		}
-	}
-}
-
-void	space_pause(SDL_Event *event)
-{
-	int		pass;
-
-	pass = 1;
-	while (pass)
-	{
-		SDL_WaitEvent(event);
-		if (event->type == SDL_KEYDOWN)
-		{
-			if (event->key.keysym.sym == SDLK_o)
-				pass = 0;
-			if (event->key.keysym.sym == SDLK_ESCAPE)
-				exit(1);
-		}
-	}
-}
-
 void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 {
 	SDL_Rect	pos;
@@ -63,6 +25,25 @@ void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 	}
 }
 
+void	wait_close(void)
+{
+	SDL_Event event;
+	int	pass;
+
+	pass = 1;
+	while (pass)
+	{
+		SDL_WaitEvent(&event);
+		if (event.type == SDL_QUIT)
+			pass = 0;
+		else if (event.type == SDL_KEYDOWN)
+		{
+			if (event.key.keysym.sym == SDLK_ESCAPE)
+				pass = 0;
+		}
+	}
+}
+
 SDL_Surface	*put_win_p(t_visual *visual, int who)
 {
 	SDL_Surface	*win;
@@ -76,10 +57,65 @@ SDL_Surface	*put_win_p(t_visual *visual, int who)
 	return (win);
 }
 
+static void	score_result(t_visual *v)
+{	
+	char		*line;
+	SDL_Rect	pos_w;
+	TTF_Font	*font;
+	int		score_p1;
+	int		score_p2;
+
+	if (!(font = TTF_OpenFont(FONT_TYPE, FONT_SIZE)))
+		error((char*)TTF_GetError());
+	get_next_line(0, &line);
+	score_p1 = ft_atoi(&line[10]);
+	free(line);
+	get_next_line(0, &line);
+	score_p2 = ft_atoi(&line[10]);
+	ft_printf("%10s:%d\n%10s: %d", v->player1, score_p1, v->player2, score_p2);
+	v->win = TTF_RenderText_Blended(font, "WIN!", v->color_p1);
+	pos_w.y = 50;
+	pos_w.y = 600;
+	SDL_BlitSurface(v->win, NULL, v->screen, &pos_w);
+	SDL_Flip(v->screen);
+	TTF_CloseFont(font);
+}
+
+void		visual_score(t_visual *v)
+{
+	char	*line;
+
+	get_next_line(0, &line);
+	while (ft_strncmp(line, "Plateau", 4) && ft_strncmp(line, "==", 2))
+	{
+		free(line);
+		if (ft_strncmp(line, "==", 2))
+			get_next_line(0, &line);
+	}
+	if (!ft_strncmp(line, "==", 2))
+		score_result(v);
+	free(line);
+	SDL_Flip(v->screen);
+}
+
+void	event_trigger(SDL_Event *event)
+{
+	if (event->type == SDL_QUIT)
+		exit(1) ;
+	if (event->type == SDL_KEYDOWN)
+	{
+		if (event->key.keysym.sym == SDLK_ESCAPE)
+			exit(1);
+		if (event->key.keysym.sym == SDLK_p)
+			space_pause(event);
+		if (event->key.keysym.sym == SDLK_SPACE)
+			pas_pause();
+	}
+}
+
 void	update_screen(t_visual *v)
 {
 	SDL_Event	event;
-	//SDL_Surface	*win;
 	char		*line;
 	int		i;
 	int		j;
@@ -100,50 +136,8 @@ void	update_screen(t_visual *v)
 			draw_it(v, &line[++j], i, v->blocks);
 			free(line);
 		}
-		if (event.type == SDL_QUIT)
-			exit(1) ;
-		if (event.type == SDL_KEYDOWN)
-		{
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-				exit(1);
-			if (event.key.keysym.sym == SDLK_p)
-				space_pause(&event);
-			if (event.key.keysym.sym == SDLK_SPACE)
-				pas_pause();
-		}
-		get_next_line(0, &line);
-		while (ft_strncmp(line, "Plateau", 4) && ft_strncmp(line, "==", 2))
-		{
-			free(line);
-			get_next_line(0, &line);
-		}
-		if (!ft_strncmp(line, "==", 2))
-		{
-			//win = put_win_p(v, 1);
-			//win = put_win_p(v, 2);
-			return ;
-		}
-		free(line);
-		SDL_Flip(v->screen);
-	}
-}
-
-void	wait_close(void)
-{
-	SDL_Event event;
-	int	pass;
-
-	pass = 1;
-	while (pass)
-	{
-		SDL_WaitEvent(&event);
-		if (event.type == SDL_QUIT)
-			pass = 0;
-		else if (event.type == SDL_KEYDOWN)
-		{
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-				pass = 0;
-		}
+		event_trigger(&event);
+		visual_score(v);
 	}
 }
 
@@ -215,6 +209,7 @@ int	main(void)
 	SDL_Flip(visual->screen);
 	map_size(&(visual->height), &(visual->width));
 	update_screen(visual);
+	SDL_Flip(visual->screen);
 	wait_close();
 	free_all(&visual);
 	return (EXIT_SUCCESS);

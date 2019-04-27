@@ -19,8 +19,7 @@ void	free_all(t_visual **visual)
 	SDL_FreeSurface((*visual)->arena);
 	SDL_FreeSurface((*visual)->bk_img);
 	SDL_FreeSurface((*visual)->header);
-	SDL_FreeSurface((*visual)->text_p1);
-	SDL_FreeSurface((*visual)->text_p2);
+	SDL_FreeSurface((*visual)->win);
 	free((*visual)->player1);
 	free((*visual)->player2);
 	free(*visual);
