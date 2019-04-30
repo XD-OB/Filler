@@ -3,13 +3,13 @@
 static SDL_Surface	*put_header(SDL_Surface *screen)
 {
 	SDL_Surface	*header;
-	SDL_Rect	header_pos;
+	SDL_Rect	pos;
 
-	header = SDL_CreateRGBSurface(SDL_HWSURFACE, WIN_WIDTH, 100, 32, 0, 0, 0, 0);
-	header_pos.x = 0;
-	header_pos.y = 0;
+	header = SDL_CreateRGBSurface(SDL_HWSURFACE, WIN_WIDTH, 90, 32, 0, 0, 0, 0);
+	pos.x = 0;
+	pos.y = 0;
 	SDL_FillRect(header, NULL, SDL_MapRGB(screen->format, 200, 200, 200));
-	SDL_BlitSurface(header, NULL, screen, &header_pos);
+	SDL_BlitSurface(header, NULL, screen, &pos);
 	return (header);
 }
 
@@ -18,7 +18,7 @@ static SDL_Surface	*put_arena(SDL_Surface *screen)
 	SDL_Surface	*arena;
 	SDL_Rect	arena_pos;
 
-	arena = SDL_CreateRGBSurface(SDL_HWSURFACE, 600, 600, 32, 0, 0, 0, 0);
+	arena = SDL_CreateRGBSurface(SDL_HWSURFACE, 598, 600, 32, 0, 0, 0, 0);
 	arena_pos.x = (WIN_WIDTH / 2) - (600 / 2);
 	arena_pos.y = (WIN_HEIGHT / 2) - (600 / 2);
 	SDL_FillRect(arena, NULL, SDL_MapRGB(screen->format, 200, 200, 200));
@@ -33,7 +33,7 @@ static SDL_Surface	*put_background(SDL_Surface *screen)
 
 	bk_img = IMG_Load(BK_IMG);
 	bk_img_pos.x = 0;
-	bk_img_pos.y = 100;
+	bk_img_pos.y = 90;
 	SDL_BlitSurface(bk_img, NULL, screen, &bk_img_pos);
 	return (bk_img);
 }

@@ -8,6 +8,7 @@ void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 	i = -1;
 	while (++i < v->width)
 	{
+		v->blocks[level * v->width + i] = NULL;
 		if (str[i] == 'x' || str[i] == 'o')
 		{
 			v->blocks[level * v->width + i] = SDL_CreateRGBSurface(SDL_HWSURFACE, BLOCK(v->width), BLOCK(v->height), 32, 0, 0, 0, 0);
@@ -240,6 +241,6 @@ int	main(void)
 	update_screen(visual);
 	SDL_Flip(visual->screen);
 	wait_close();
-	//free_all(&visual);
+	free_all(&visual);
 	return (EXIT_SUCCESS);
 }
