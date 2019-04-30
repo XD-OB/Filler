@@ -8,17 +8,15 @@ void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 	i = -1;
 	while (++i < v->width)
 	{
-		if (str[i] != '.')
+		if (str[i] == 'x' || str[i] == 'o')
 		{
 			v->blocks[level * v->width + i] = SDL_CreateRGBSurface(SDL_HWSURFACE, BLOCK(v->width), BLOCK(v->height), 32, 0, 0, 0, 0);
 			pos.y = level * (BLOCK(v->height) + 2) + 200;
 			pos.x = i * (BLOCK(v->width) + 2) + 401;
-			if (str[i] == 'X')
+			if (str[i] == 'x')
 				SDL_FillRect(block[level * v->width + i],  NULL, SDL_MapRGB(v->screen->format, 0, 255, 0));
-			else if (str[i] == 'O')
+			else if (str[i] == 'o')
 				SDL_FillRect(block[level * v->width + i], NULL, SDL_MapRGB(v->screen->format, 0, 0, 255));
-			else
-				SDL_FillRect(block[level * v->width + i], NULL, SDL_MapRGB(v->screen->format, 255, 0, 0));
 			SDL_BlitSurface(block[level * v->width + i], NULL, v->screen, &pos);
 			SDL_Flip(v->screen);
 		}
@@ -44,22 +42,8 @@ void	wait_close(void)
 	}
 }
 
-SDL_Surface	*put_win_p(t_visual *visual, int who)
-{
-	SDL_Surface	*win;
-	SDL_Rect	pos;
-
-	pos.x = 0;
-	pos.y = 1300;
-	win = SDL_CreateRGBSurface(SDL_HWSURFACE, WIN_WIDTH, 100, 32, 0, 0, 0, 0);
-	SDL_BlitSurface(win, NULL, visual->screen, &pos);
-	SDL_Flip(visual->screen);
-	return (win);
-}
-
-static void	score_result(t_visual *v)
+static void	score_result(t_visual *v, char **line)
 {	
-	char		*line;
 	SDL_Rect	pos_w;
 	TTF_Font	*font;
 	int		score_p1;
@@ -67,21 +51,22 @@ static void	score_result(t_visual *v)
 
 	if (!(font = TTF_OpenFont(FONT_TYPE, FONT_SIZE)))
 		error((char*)TTF_GetError());
-	get_next_line(0, &line);
-	score_p1 = ft_atoi(&line[10]);
-	free(line);
-	get_next_line(0, &line);
-	score_p2 = ft_atoi(&line[10]);
-	ft_printf("%10s:%d\n%10s: %d", v->player1, score_p1, v->player2, score_p2);
+	score_p1 = ft_atoi(&(*line)[10]);
+	free(*line);
+	get_next_line(0, line);
+	score_p2 = ft_atoi(&(*line)[10]);
+	free(*line);
+	ft_printf("P1 :%-12s:%d\nP2 :%-12s:%d\n", v->player1, score_p1,
+			v->player2, score_p2);
 	v->win = TTF_RenderText_Blended(font, "WIN!", v->color_p1);
-	pos_w.y = 50;
+	pos_w.y = 0;
 	pos_w.y = 600;
 	SDL_BlitSurface(v->win, NULL, v->screen, &pos_w);
 	SDL_Flip(v->screen);
 	TTF_CloseFont(font);
 }
 
-void		visual_score(t_visual *v)
+int		visual_score(t_visual *v)
 {
 	char	*line;
 
@@ -93,9 +78,14 @@ void		visual_score(t_visual *v)
 			get_next_line(0, &line);
 	}
 	if (!ft_strncmp(line, "==", 2))
-		score_result(v);
-	free(line);
+	{
+		score_result(v, &line);
+		return (1);
+	}
+	else
+		free(line);
 	SDL_Flip(v->screen);
+	return (0);
 }
 
 void	event_trigger(SDL_Event *event)
@@ -137,7 +127,8 @@ void	update_screen(t_visual *v)
 			free(line);
 		}
 		event_trigger(&event);
-		visual_score(v);
+		if (visual_score(v))
+			return ;
 	}
 }
 
@@ -211,6 +202,6 @@ int	main(void)
 	update_screen(visual);
 	SDL_Flip(visual->screen);
 	wait_close();
-	free_all(&visual);
+	//free_all(&visual);
 	return (EXIT_SUCCESS);
 }
