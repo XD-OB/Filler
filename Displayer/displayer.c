@@ -212,7 +212,7 @@ void	display_players(t_visual *v)
 	free(line);
 	v->player2 = player_name();
 	pos_p.y = 0;
-	pos_p.x = 1380 - ((int)ft_strlen(v->player2) * 50);
+	pos_p.x = 1380 - ((int)ft_strlen(v->player2) * 30);
 	v->text_p2 = TTF_RenderText_Blended(font, v->player2, v->color_p2);
 	SDL_BlitSurface(v->text_p2, NULL, v->screen, &pos_p);
 	TTF_CloseFont(font);
@@ -224,7 +224,7 @@ int	main(void)
 	char		*line;
 
 	if (!(visual = (t_visual*)malloc(sizeof(t_visual))))
-		error("Can't Allocate memory space");
+		exit(-1);
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)
 		error((char*)SDL_GetError);
 	if (TTF_Init() == -1)

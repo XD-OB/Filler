@@ -18,7 +18,7 @@
 # define BK_IMG "./Displayer/img/war.jpg"
 
 # define FONT_TYPE "./Displayer/Fonts/nadiasofia.ttf"
-# define FONT_SIZE 80
+# define FONT_SIZE 70
 # define FONT_WTYPE "./Displayer/Fonts/GROBOLD.ttf"
 # define FONT_WSIZE 40
 
