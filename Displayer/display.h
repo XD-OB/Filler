@@ -9,7 +9,7 @@
 # define WIN_WIDTH 1400
 # define WIN_HEIGHT 1000
 
-# define BLOCK(x) (600 / (x - 1) - 4)
+# define BLOCK(x) (600 / x - 1)
 
 # define ICON_IMG "./Displayer/img/icon.png"
 # define ICON_TITLE "Bring Your Filler And Let's Fight!"
@@ -19,6 +19,8 @@
 
 # define FONT_TYPE "./Displayer/Fonts/nadiasofia.ttf"
 # define FONT_SIZE 80
+# define FONT_WTYPE "./Displayer/Fonts/GROBOLD.ttf"
+# define FONT_WSIZE 40
 
 typedef struct		s_visual
 {

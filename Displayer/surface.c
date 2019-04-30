@@ -8,7 +8,7 @@ static SDL_Surface	*put_header(SDL_Surface *screen)
 	header = SDL_CreateRGBSurface(SDL_HWSURFACE, WIN_WIDTH, 100, 32, 0, 0, 0, 0);
 	header_pos.x = 0;
 	header_pos.y = 0;
-	SDL_FillRect(header, NULL, SDL_MapRGB(screen->format, 255, 255, 255));
+	SDL_FillRect(header, NULL, SDL_MapRGB(screen->format, 200, 200, 200));
 	SDL_BlitSurface(header, NULL, screen, &header_pos);
 	return (header);
 }

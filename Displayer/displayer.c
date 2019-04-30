@@ -11,8 +11,8 @@ void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 		if (str[i] == 'x' || str[i] == 'o')
 		{
 			v->blocks[level * v->width + i] = SDL_CreateRGBSurface(SDL_HWSURFACE, BLOCK(v->width), BLOCK(v->height), 32, 0, 0, 0, 0);
-			pos.y = level * (BLOCK(v->height) + 2) + 200;
-			pos.x = i * (BLOCK(v->width) + 2) + 401;
+			pos.y = level * (BLOCK(v->height) + 1) + 200;
+			pos.x = i * (BLOCK(v->width) + 1) + 400;
 			if (str[i] == 'x')
 				SDL_FillRect(block[level * v->width + i],  NULL, SDL_MapRGB(v->screen->format, 0, 255, 0));
 			else if (str[i] == 'o')
@@ -42,25 +42,56 @@ void	wait_close(void)
 	}
 }
 
+static SDL_Color	color_win(int s_p1, int s_p2, t_visual *v)
+{
+	SDL_Color	color;
+
+	color.r = 0;
+	color.g = 0;
+	color.b = 0;
+	if (s_p1 > s_p2)
+	{
+		ft_putstr("\nP1 ** WIN **\n");
+		ft_putstr("P2    LOSE  \n");
+		return (v->color_p1);
+	}
+	else if (s_p1 < s_p2)
+	{
+		ft_putstr("\nP1    LOSE  \n");
+		ft_putstr("P2 ** WIN **\n");
+		return (v->color_p2);
+	}
+	else
+	{
+		ft_putstr("\nP1 -EQUAL- P2\n");
+		return (color);
+	}
+}
+
+/*
+**	s_p:	score player
+*/
+
 static void	score_result(t_visual *v, char **line)
 {	
 	SDL_Rect	pos_w;
 	TTF_Font	*font;
-	int		score_p1;
-	int		score_p2;
+	SDL_Color	color;
+	int		s_p[2];
 
-	if (!(font = TTF_OpenFont(FONT_TYPE, FONT_SIZE)))
+	if (!(font = TTF_OpenFont(FONT_WTYPE, FONT_WSIZE)))
 		error((char*)TTF_GetError());
-	score_p1 = ft_atoi(&(*line)[10]);
+	s_p[0] = ft_atoi(&(*line)[10]);
 	free(*line);
 	get_next_line(0, line);
-	score_p2 = ft_atoi(&(*line)[10]);
+	s_p[1] = ft_atoi(&(*line)[10]);
 	free(*line);
-	ft_printf("P1 :%-12s:%d\nP2 :%-12s:%d\n", v->player1, score_p1,
-			v->player2, score_p2);
-	v->win = TTF_RenderText_Blended(font, "WIN!", v->color_p1);
-	pos_w.y = 0;
-	pos_w.y = 600;
+	ft_printf("P1 :%-11s %d\nP2 :%-11s %d\n", v->player1, s_p[0],
+			v->player2, s_p[1]);
+	color = color_win(s_p[0], s_p[1], v);
+	v->win = TTF_RenderText_Blended(font, "WIN!", color);
+	pos_w.y = 20;
+	pos_w.x = 650;
 	SDL_BlitSurface(v->win, NULL, v->screen, &pos_w);
 	SDL_Flip(v->screen);
 	TTF_CloseFont(font);
