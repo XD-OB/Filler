@@ -51,25 +51,33 @@ static SDL_Color	color_win(int s_p1, int s_p2, t_visual *v)
 	color.b = 0;
 	if (s_p1 > s_p2)
 	{
-		ft_putstr("\nP1 ** WIN **\n");
-		ft_putstr("P2    LOSE  \n");
+		ft_printf("\n%{GREEN}P1 ** WIN **%{eoc}\n");
+		ft_printf("%{RED}P2    LOSE  %{eoc}\n");
 		return (v->color_p1);
 	}
 	else if (s_p1 < s_p2)
 	{
-		ft_putstr("\nP1    LOSE  \n");
-		ft_putstr("P2 ** WIN **\n");
+		ft_printf("\n%{RED}P1    LOSE  %{eoc}\n");
+		ft_printf("%{GREEN}P2 ** WIN **%{eoc}\n");
 		return (v->color_p2);
 	}
 	else
 	{
-		ft_putstr("\nP1 -EQUAL- P2\n");
+		ft_printf("\n%{CYAN}P1 -EQUAL- P2%{eoc}\n");
 		return (color);
 	}
 }
 
+static void	score_board(t_visual *v, int s_p1, int s_p2)
+{
+	ft_printf("P1 :%{CYAN}%-11s ", v->player1);
+	ft_printf("%{YELLOW}%d%{eoc}\n", s_p1);
+	ft_printf("P2 :%{CYAN}%-11s ", v->player2);
+	ft_printf("%{YELLOW}%d%{eoc}\n", s_p2);
+}
+
 /*
-**	s_p:	score player
+**	s_p:	score player	0: p1	1: p2
 */
 
 static void	score_result(t_visual *v, char **line)
@@ -86,8 +94,7 @@ static void	score_result(t_visual *v, char **line)
 	get_next_line(0, line);
 	s_p[1] = ft_atoi(&(*line)[10]);
 	free(*line);
-	ft_printf("P1 :%-11s %d\nP2 :%-11s %d\n", v->player1, s_p[0],
-			v->player2, s_p[1]);
+	score_board(v, s_p[0], s_p[1]);
 	color = color_win(s_p[0], s_p[1], v);
 	v->win = TTF_RenderText_Blended(font, "WIN!", color);
 	pos_w.y = 20;
