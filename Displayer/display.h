@@ -46,5 +46,10 @@ void			error(char *error);
 char			*player_name(void);
 void			space_pause(SDL_Event *event);
 void			pas_pause(void);
+int			visual_score(t_visual *v);
+void			event_trigger(SDL_Event *event);
+void			wait_close(void);
+void			display_players(t_visual *v);
+void			update_screen(t_visual *v);
 
 #endif

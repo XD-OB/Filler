@@ -4,7 +4,9 @@ EOC = \033[1;0m
 
 NAME = ../ob_displayer
 
-SRC = *.c
+DISPLAYER_SRC = event main pause score surface displayer tools
+
+SRC = $(addprefix srcs/, $(addsuffix .c, $(DISPLAYER_SRC)))
 
 OBJ = *.o
 
@@ -12,7 +14,7 @@ all: $(NAME)
 
 $(NAME):
 	@make -C ../libft re
-	@gcc -c $(SRC) 
+	@gcc -c -I ./ $(SRC)
 	@gcc -o $(NAME) $(OBJ) -L ../libft/ -lft -lSDL -lSDL_image -lSDL_ttf
 	@echo "$(GREEN)Displayer is made in the Root Directory!$(EOC)"
 
