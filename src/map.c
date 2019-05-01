@@ -11,6 +11,10 @@ void		init_map_size(t_filler *filler, char *line)
 	filler->cols = ft_atoi(&line[i]);
 }
 
+/*
+**	always!		me: -1		opponent: -2
+*/
+
 int		*str_int(t_filler *filler)
 {
 	int	*segm;
@@ -43,29 +47,7 @@ void		take_sides(t_filler *filler, char **line)
 	if (!ft_strncmp(*line, "$$$", 3))
 	{
 		filler->me = ft_atoi(&(*line)[10]);
-		filler->vs = (filler->me == 1) ? 2 : 1;
-		//	ft_dprintf(2, "me: %d\tvs: %d\n", filler->me, filler->vs);
 		free(*line);
 		get_next_line(0, line);
 	}
-}
-
-int		a_zero(int **tab, int size_y, int size_x)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < size_y)
-	{
-		j = 0;
-		while (j < size_x)
-		{
-			if (tab[i][j] == 0)
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
 }

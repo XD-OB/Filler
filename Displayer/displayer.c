@@ -11,14 +11,19 @@ void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 		v->blocks[level * v->width + i] = NULL;
 		if (str[i] == 'x' || str[i] == 'o')
 		{
-			v->blocks[level * v->width + i] = SDL_CreateRGBSurface(SDL_HWSURFACE, BLOCK(v->width), BLOCK(v->height), 32, 0, 0, 0, 0);
+			v->blocks[level * v->width + i] =
+				SDL_CreateRGBSurface(SDL_HWSURFACE, BLOCK(v->width),
+						BLOCK(v->height), 32, 0, 0, 0, 0);
 			pos.y = level * (BLOCK(v->height) + 1) + 200;
 			pos.x = i * (BLOCK(v->width) + 1) + 400;
 			if (str[i] == 'x')
-				SDL_FillRect(block[level * v->width + i],  NULL, SDL_MapRGB(v->screen->format, 0, 255, 0));
+				SDL_FillRect(block[level * v->width + i], NULL,
+					SDL_MapRGB(v->screen->format, 0, 255, 0));
 			else if (str[i] == 'o')
-				SDL_FillRect(block[level * v->width + i], NULL, SDL_MapRGB(v->screen->format, 0, 0, 255));
-			SDL_BlitSurface(block[level * v->width + i], NULL, v->screen, &pos);
+				SDL_FillRect(block[level * v->width + i], NULL,
+					SDL_MapRGB(v->screen->format, 0, 0, 255));
+			SDL_BlitSurface(block[level * v->width + i], NULL,
+					v->screen, &pos);
 			SDL_Flip(v->screen);
 		}
 	}
@@ -142,27 +147,31 @@ void	event_trigger(SDL_Event *event)
 	}
 }
 
+/*
+**	i:	0:i	1:j
+*/
+
 void	update_screen(t_visual *v)
 {
 	SDL_Event	event;
 	char		*line;
-	int		i;
-	int		j;
+	int		i[2];
 
-	i = -1;
-	v->blocks = (SDL_Surface**)malloc(sizeof(SDL_Surface*) * (v->width * v->height));
+	i[0] = -1;
+	v->blocks = (SDL_Surface**)malloc(sizeof(SDL_Surface*)
+			* (v->width * v->height));
 	while (get_next_line(0, &line) > 0)
 	{
 		SDL_PollEvent(&event);
 		free(line);
-		i = -1;
-		while (++i < v->height)
+		i[0] = -1;
+		while (++i[0] < v->height)
 		{
-			j = 0;
+			i[1] = 0;
 			get_next_line(0, &line);
-			while (line[j] != ' ')
-				j++;
-			draw_it(v, &line[++j], i, v->blocks);
+			while (line[i[1]] != ' ')
+				i[1]++;
+			draw_it(v, &line[++i[1]], i[0], v->blocks);
 			free(line);
 		}
 		event_trigger(&event);
@@ -196,8 +205,7 @@ void	display_players(t_visual *v)
 	int		i;
 
 	i = -1;
-	if (!(font = TTF_OpenFont(FONT_TYPE, FONT_SIZE)))
-		error((char*)TTF_GetError());
+	font = TTF_OpenFont(FONT_TYPE, FONT_SIZE);
 	while (++i < 6)
 	{
 		get_next_line(0, &line);
@@ -212,7 +220,7 @@ void	display_players(t_visual *v)
 	free(line);
 	v->player2 = player_name();
 	pos_p.y = 0;
-	pos_p.x = 1380 - ((int)ft_strlen(v->player2) * 30);
+	pos_p.x = 1380 - ((int)ft_strlen(v->player2) * 40);
 	v->text_p2 = TTF_RenderText_Blended(font, v->player2, v->color_p2);
 	SDL_BlitSurface(v->text_p2, NULL, v->screen, &pos_p);
 	TTF_CloseFont(font);

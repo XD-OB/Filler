@@ -1,3 +1,7 @@
+GREEN = \033[1;32m
+RED = \033[1;31m
+EOC = \033[1;0m
+
 NAME = libft.a
 
 LIBFT  = ft_memset ft_bzero ft_memcpy ft_memccpy ft_memmove ft_memchr ft_printhex\
@@ -39,13 +43,14 @@ $(NAME) :
 		@gcc -c  $(FLAGS) -I ./ $(LIB_FT_PRINTF_SRC) $(LIBFT_SRC)
 		@ar rc $(NAME) $(LIBFT_OBJ) $(LIB_FT_PRINTF_OBJ)
 		@ranlib	$(NAME)
+		@echo "$(GREEN)Creating Libft$(EOC)"
 
 clean :
 		@/bin/rm -rf $(LIB_FT_PRINTF_OBJ) $(LIBFT_OBJ)
+		@echo "$(GREEN)Cleaning Libft$(EOC)"
 
 fclean : clean
 		@/bin/rm -rf $(NAME)
+		@echo "$(RED)Total Cleaning Libft$(EOC)"
 
 re : fclean all
-
-.PHONY : all clean fclean re

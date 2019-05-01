@@ -6,10 +6,8 @@ static void	heatmap_engine(t_filler **filler, int y, int x, int victim)
 
 	if (victim == -2)
 		siege = -5;
-	else if (victim == -5)
-		siege = 1;
 	else
-		siege = victim + 1;
+		siege = (victim == -5) ? 1 : victim + 1;
 	if (x < (*filler)->cols - 1 && (*filler)->map[y][x + 1] == victim)
 		(*filler)->map[y][x] = siege;
 	if (x > 0 && (*filler)->map[y][x - 1] == victim)
@@ -42,10 +40,8 @@ void		heat_map(t_filler **filler)
 		i = -1;
 		if (wave == 0)
 			victim = -2;
-		else if (wave == 1)
-			victim = -5;
 		else
-			victim = wave - 1;
+			victim = (wave == 1) ? -5 : wave - 1;
 		while (++i < (*filler)->rows)
 		{
 			j = -1;
@@ -54,23 +50,11 @@ void		heat_map(t_filler **filler)
 					heatmap_engine(filler, i, j, victim);
 		}
 	}
-	i = -1;
-	while (++i < (*filler)->rows)
-	{
-		j = -1;
-		while (++j < (*filler)->cols)
-		{
-			if ((*filler)->map[i][j] >= 0 && (*filler)->map[i][j] < 10)
-				ft_putstr_fd(" ", 2);
-			ft_dprintf(2, "%d", (*filler)->map[i][j]);
-		}
-		ft_putstr_fd("\n", 2);
-	}
-	ft_putstr_fd("\n", 2);
 }
 
-static void	bonus_point(t_filler *filler, int *score, int y, int x)
+static void	score_point(t_filler *filler, int *score, int y, int x)
 {
+	*score += filler->map[y][x];
 	if (y > 0 && filler->map[y - 1][x] == -2)
 		*score -= 2;
 	if (x > 0 && filler->map[y][x - 1] == -2)
@@ -90,43 +74,43 @@ static void	bonus_point(t_filler *filler, int *score, int y, int x)
 		*score -= 2;
 }
 
+/*
+**	v:	0:i	1:j	2:a	3:fine
+*/
+
 static int	the_score(t_filler *filler, int y, int x)
 {
 	int	score;
-	int	fine;
-	int	a;
-	int	i;
-	int	j;
+	int	v[4];
 
 	score = 0;
-	fine = 0;
-	i = filler->begin_y - 1;
-	while (++i < filler->token_y)
+	v[3] = 0;
+	v[0] = filler->begin_y - 1;
+	while (++v[0] < filler->token_y)
 	{
-		a = x;
-		j = filler->begin_x - 1;
-		while (++j < filler->token_x)
+		v[2] = x;
+		v[1] = filler->begin_x - 1;
+		while (++v[1] < filler->token_x)
 		{
-			if (a >= filler->cols || y >= filler->rows
-				|| filler->map[y][a] == -2)
+			if (v[2] >= filler->cols || y >= filler->rows
+					|| filler->map[y][v[2]] == -2)
 				return (INT_MAX);
-			if (filler->map[y][a] == -1 && filler->token[i][j] == '*')
-				fine++;
+			if (filler->map[y][v[2]] == -1
+				&& filler->token[v[0]][v[1]] == '*')
+				v[3]++;
 			else
-			{
-				score += filler->map[y][a];
-				bonus_point(filler, &score, y, x);
-			}
-			a++;
+				score_point(filler, &score, y, v[2]);
+			v[2]++;
 		}
 		y++;
 	}
-	return ((fine == 1) ? score : INT_MAX);
+	return ((v[3] == 1) ? score : INT_MAX);
 }
 
 void		xy_coord(t_filler **filler)
 {
 	int	score;
+	int	tmp;
 	int	i;
 	int	j;
 
@@ -139,11 +123,11 @@ void		xy_coord(t_filler **filler)
 		j = -1;
 		while (++j < (*filler)->cols)
 		{
-			if (the_score(*filler, i, j) <= score)
+			if ((tmp = the_score(*filler, i, j)) <= score)
 			{
 				(*filler)->x = j;
 				(*filler)->y = i;
-				score = the_score(*filler, i, j);
+				score = tmp;
 			}
 		}
 	}

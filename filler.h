@@ -9,7 +9,6 @@
 typedef struct		s_filler
 {
 	int		me;
-	int		vs;
 	int		rows;
 	int		cols;
 	int		begin_y;

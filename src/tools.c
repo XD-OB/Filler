@@ -27,17 +27,7 @@ void	free_filler(t_filler *filler)
 
 void	ultime_free_filler(t_filler **filler)
 {
-	int	i;
-
-	i = 0;
-	while (i < (*filler)->rows)
-	{
-		free((*filler)->map[i]);
-		i++;
-	}
-	i = 0;
-	free((*filler)->map);
-	free_tab(&((*filler)->token), (*filler)->token_y);
+	free_filler(*filler);
 	free(*filler);
 	*filler = NULL;
 }
