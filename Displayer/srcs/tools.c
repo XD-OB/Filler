@@ -1,14 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/02 21:20:51 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/02 21:21:03 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "display.h"
 
-void	error(char *error)
+void		free_all(t_visual **visual)
 {
-	ft_dprintf(2, "Initializing Error!:\n%s\n", error);
-	exit(EXIT_FAILURE);
-}
-
-void	free_all(t_visual **visual)
-{
-	int	i;
+	int		i;
 
 	i = -1;
 	while (++i < (*visual)->height * (*visual)->width)
@@ -27,11 +33,11 @@ void	free_all(t_visual **visual)
 	SDL_Quit();
 }
 
-char	*player_name(void)
+char		*player_name(void)
 {
 	char	*line;
 	char	*str;
-	int	i;
+	int		i;
 
 	i = 3;
 	get_next_line(0, &line);

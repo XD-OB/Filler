@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/02 16:32:39 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/02 19:57:40 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "display.h"
 
-void	map_size(int *height, int *width)
+void			map_size(int *height, int *width)
 {
-	char	*line;
-	int	i;
+	char		*line;
+	int			i;
 
 	i = -1;
 	get_next_line(0, &line);
@@ -17,28 +29,27 @@ void	map_size(int *height, int *width)
 	free(line);
 }
 
-int	main(void)
+int				main(int ac, char **av)
 {
 	t_visual	*visual;
 	char		*line;
 
 	if (!(visual = (t_visual*)malloc(sizeof(t_visual))))
-		exit(-1);
+		return (-1);
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)
-		error((char*)SDL_GetError);
+		return (-1);
 	if (TTF_Init() == -1)
-		error((char*)TTF_GetError());
-	if (!(visual->screen = SDL_SetVideoMode(WIN_WIDTH,
-				WIN_HEIGHT, 32, SDL_SWSURFACE)))
-		error((char*)SDL_GetError);
-	SDL_WM_SetIcon(IMG_Load(ICON_IMG), NULL);
-	SDL_WM_SetCaption(ICON_TITLE, ICON_ATTR);
-	put_pieces(visual);
+		return (-1);
+	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
+	visual->window = SDL_CreateWindow(ICON_TITLE, 200, 200,
+			WIN_WIDTH, WIN_HEIGHT, 0);
+	visual->screen = SDL_GetWindowSurface(visual->window);
+	put_pieces(visual, ac, av);
+	SDL_UpdateWindowSurface(visual->window);
 	display_players(visual);
-	SDL_Flip(visual->screen);
 	map_size(&(visual->height), &(visual->width));
 	update_screen(visual);
-	SDL_Flip(visual->screen);
+	SDL_UpdateWindowSurface(visual->window);
 	wait_close();
 	free_all(&visual);
 	return (EXIT_SUCCESS);

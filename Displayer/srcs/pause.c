@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pause.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/02 19:58:32 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/02 19:59:40 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "display.h"
 
-void	pas_pause(void)
+void			pas_pause(void)
 {
-	SDL_Event 	event;
-	int		pass;
+	SDL_Event	event;
+	int			pass;
 
 	pass = 1;
 	while (pass)
@@ -19,9 +31,9 @@ void	pas_pause(void)
 	}
 }
 
-void	space_pause(SDL_Event *event)
+void			space_pause(SDL_Event *event)
 {
-	int		pass;
+	int			pass;
 
 	pass = 1;
 	while (pass)

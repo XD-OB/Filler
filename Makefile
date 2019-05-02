@@ -6,7 +6,7 @@
 #    By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/20 13:15:54 by obelouch          #+#    #+#              #
-#    Updated: 2019/04/20 14:30:27 by obelouch         ###   ########.fr        #
+#    Updated: 2019/05/02 16:28:43 by obelouch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRC = $(addprefix src/, $(addsuffix .c, $(FILLER)))
 all : $(NAME)
 
 $(NAME) :
+	@make -C ./Displayer re
 	@make -C ./libft re
 	@gcc -c $(SRC) $(FLAGS) -I ./
 	@gcc -o $(NAME) $(OBJ) -L ./libft -lft
@@ -34,11 +35,13 @@ $(NAME) :
 	@echo "$(GREEN)obelouch.filler is Ready :)$(EOC)"
 
 clean :
+	@make -C ./Displayer clean
 	@/bin/rm -f src/$(OBJ)
 	@/bin/rm -f libft/$(OBJ)
 	@echo "$(GREEN)Cleaned Successfuly Filler$(EOC)"
 
 fclean : clean
+	@make -C ./Displayer fclean
 	@/bin/rm -f $(NAME) ./libft/libft.a
 	@echo "$(RED)Totaly Cleaned Filler$(EOC)"
 

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   score.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/02 19:59:55 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/02 20:00:55 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "display.h"
 
 static SDL_Color	color_win(int s_p1, int s_p2, t_visual *v)
 {
-	SDL_Color	color;
+	SDL_Color		color;
 
 	color.r = 0;
 	color.g = 0;
@@ -26,7 +38,7 @@ static SDL_Color	color_win(int s_p1, int s_p2, t_visual *v)
 	}
 }
 
-static void	score_board(t_visual *v, int s_p1, int s_p2)
+static void			score_board(t_visual *v, int s_p1, int s_p2)
 {
 	ft_printf("P1 :%{CYAN}%-11s ", v->player1);
 	ft_printf("%{YELLOW}%d%{eoc}\n", s_p1);
@@ -38,15 +50,14 @@ static void	score_board(t_visual *v, int s_p1, int s_p2)
 **	s_p:	score player	0: p1	1: p2
 */
 
-static void	score_result(t_visual *v, char **line)
+static void			score_result(t_visual *v, char **line)
 {
-	SDL_Rect	pos_w;
-	TTF_Font	*font;
-	SDL_Color	color;
-	int		s_p[2];
+	SDL_Rect		pos_w;
+	TTF_Font		*font;
+	SDL_Color		color;
+	int				s_p[2];
 
-	if (!(font = TTF_OpenFont(FONT_WTYPE, FONT_WSIZE)))
-		error((char*)TTF_GetError());
+	font = TTF_OpenFont(FONT_WTYPE, FONT_WSIZE);
 	s_p[0] = ft_atoi(&(*line)[10]);
 	free(*line);
 	get_next_line(0, line);
@@ -58,13 +69,13 @@ static void	score_result(t_visual *v, char **line)
 	pos_w.y = 20;
 	pos_w.x = 650;
 	SDL_BlitSurface(v->win, NULL, v->screen, &pos_w);
-	SDL_Flip(v->screen);
+	SDL_UpdateWindowSurface(v->window);
 	TTF_CloseFont(font);
 }
 
-int		visual_score(t_visual *v)
+int					visual_score(t_visual *v)
 {
-	char	*line;
+	char			*line;
 
 	get_next_line(0, &line);
 	while (ft_strncmp(line, "Plateau", 4) && ft_strncmp(line, "==", 2))
@@ -80,6 +91,6 @@ int		visual_score(t_visual *v)
 	}
 	else
 		free(line);
-	SDL_Flip(v->screen);
+	SDL_UpdateWindowSurface(v->window);
 	return (0);
 }

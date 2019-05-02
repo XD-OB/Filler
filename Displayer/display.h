@@ -1,10 +1,22 @@
-#ifndef	VISUAL_H
-# define VISUAL_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/02 21:23:04 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/02 21:28:05 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "../filler.h"
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_ttf.h>
+#ifndef DISPLAY_H
+# define DISPLAY_H
+
+# include "../filler.h"
+# include "./SDL/SDL.h"
+# include "./SDL/SDL_image.h"
+# include "./SDL/SDL_ttf.h"
 
 # define WIN_WIDTH 1400
 # define WIN_HEIGHT 1000
@@ -24,32 +36,33 @@
 
 typedef struct		s_visual
 {
-	SDL_Surface	*screen;
-	SDL_Surface	*header;
-	SDL_Surface	*bk_img;
-	SDL_Surface	*arena;
-	SDL_Surface	**blocks;
-	int		width;
-	int		height;
-	SDL_Surface	*text_p1;
-	SDL_Surface	*text_p2;
-	SDL_Surface	*win;
-	char		*player1;
-	char		*player2;
-	SDL_Color	color_p1;
-	SDL_Color	color_p2;
-}			t_visual;
+	SDL_Window		*window;
+	SDL_Surface		*screen;
+	SDL_Renderer	*renderer;
+	SDL_Surface		*header;
+	SDL_Surface		*bk_img;
+	SDL_Surface		*arena;
+	SDL_Surface		**blocks;
+	int				width;
+	int				height;
+	SDL_Surface		*text_p1;
+	SDL_Surface		*text_p2;
+	SDL_Surface		*win;
+	char			*player1;
+	char			*player2;
+	SDL_Color		color_p1;
+	SDL_Color		color_p2;
+}					t_visual;
 
-void			put_pieces(t_visual *visual);
-void			free_all(t_visual **visual);
-void			error(char *error);
-char			*player_name(void);
-void			space_pause(SDL_Event *event);
-void			pas_pause(void);
-int			visual_score(t_visual *v);
-void			event_trigger(SDL_Event *event);
-void			wait_close(void);
-void			display_players(t_visual *v);
-void			update_screen(t_visual *v);
+void				put_pieces(t_visual *visual, int ac, char **av);
+void				free_all(t_visual **visual);
+char				*player_name(void);
+void				space_pause(SDL_Event *event);
+void				pas_pause(void);
+int					visual_score(t_visual *v);
+void				event_trigger(SDL_Event *event);
+void				wait_close(void);
+void				display_players(t_visual *v);
+void				update_screen(t_visual *v);
 
 #endif

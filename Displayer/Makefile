@@ -15,7 +15,7 @@ all: $(NAME)
 $(NAME):
 	@make -C ../libft re
 	@gcc -c -I ./ $(SRC)
-	@gcc -o $(NAME) $(OBJ) -L ../libft/ -lft -lSDL -lSDL_image -lSDL_ttf
+	@gcc -o $(NAME) $(OBJ) -L ../libft/ -lft -L./SDL/ -lSDL2 -lSDL2_image -lSDL2_ttf
 	@echo "$(GREEN)Displayer is made in the Root Directory!$(EOC)"
 
 clean:

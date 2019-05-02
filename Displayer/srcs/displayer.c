@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   displayer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/02 19:35:56 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/02 19:54:53 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "display.h"
 
-static void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
+static void		draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 {
 	SDL_Rect	pos;
-	int		i;
+	int			i;
 
 	i = -1;
 	while (++i < v->width)
@@ -11,20 +23,20 @@ static void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 		v->blocks[level * v->width + i] = NULL;
 		if (str[i] == 'x' || str[i] == 'o')
 		{
-			v->blocks[level * v->width + i] =
-				SDL_CreateRGBSurface(SDL_HWSURFACE, BLOCK(v->width),
-						BLOCK(v->height), 32, 0, 0, 0, 0);
+			v->blocks[level * v->width + i] = SDL_CreateRGBSurface(0,
+					BLOCK(v->width), BLOCK(v->height), 32, 0, 0, 0, 0);
 			pos.y = level * (BLOCK(v->height) + 1) + 200;
 			pos.x = i * (BLOCK(v->width) + 1) + 400;
 			if (str[i] == 'x')
 				SDL_FillRect(block[level * v->width + i], NULL,
-					SDL_MapRGB(v->screen->format, 0, 255, 0));
+					SDL_MapRGB(v->header->format, v->color_p2.r,
+						v->color_p2.g, v->color_p2.b));
 			else if (str[i] == 'o')
 				SDL_FillRect(block[level * v->width + i], NULL,
-					SDL_MapRGB(v->screen->format, 0, 0, 255));
-			SDL_BlitSurface(block[level * v->width + i], NULL,
-					v->screen, &pos);
-			SDL_Flip(v->screen);
+					SDL_MapRGB(v->header->format, v->color_p1.r,
+						v->color_p1.g, v->color_p1.b));
+			SDL_BlitSurface(block[level * v->width + i], NULL, v->screen, &pos);
+			SDL_UpdateWindowSurface(v->window);
 		}
 	}
 }
@@ -33,11 +45,11 @@ static void	draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 **	i:	0:i	1:j
 */
 
-void	update_screen(t_visual *v)
+void			update_screen(t_visual *v)
 {
 	SDL_Event	event;
 	char		*line;
-	int		i[2];
+	int			i[2];
 
 	i[0] = -1;
 	v->blocks = (SDL_Surface**)malloc(sizeof(SDL_Surface*)
@@ -62,12 +74,21 @@ void	update_screen(t_visual *v)
 	}
 }
 
-void	display_players(t_visual *v)
+SDL_Rect		rec_point(int y, int x)
+{
+	SDL_Rect	p;
+
+	p.y = y;
+	p.x = x;
+	return (p);
+}
+
+void			display_players(t_visual *v)
 {
 	TTF_Font	*font;
 	SDL_Rect	pos_p;
 	char		*line;
-	int		i;
+	int			i;
 
 	i = -1;
 	font = TTF_OpenFont(FONT_TYPE, FONT_SIZE);
@@ -76,17 +97,16 @@ void	display_players(t_visual *v)
 		get_next_line(0, &line);
 		free(line);
 	}
-	pos_p.y = 0;
-	pos_p.x = 80;
+	pos_p = rec_point(0, 80);
 	v->player1 = player_name();
 	v->text_p1 = TTF_RenderText_Blended(font, v->player1, v->color_p1);
 	SDL_BlitSurface(v->text_p1, NULL, v->screen, &pos_p);
 	get_next_line(0, &line);
 	free(line);
 	v->player2 = player_name();
-	pos_p.y = 0;
-	pos_p.x = 1380 - ((int)ft_strlen(v->player2) * 40);
+	pos_p = rec_point(0, 1380 - ((int)ft_strlen(v->player2) * 40));
 	v->text_p2 = TTF_RenderText_Blended(font, v->player2, v->color_p2);
 	SDL_BlitSurface(v->text_p2, NULL, v->screen, &pos_p);
+	SDL_UpdateWindowSurface(v->window);
 	TTF_CloseFont(font);
 }
