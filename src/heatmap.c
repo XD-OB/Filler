@@ -55,22 +55,22 @@ void		heat_map(t_filler **filler)
 static void	score_point(t_filler *filler, int *score, int y, int x)
 {
 	*score += filler->map[y][x];
-	if (y > 0 && filler->map[y - 1][x] == -2)
+	if (y > 0 && filler->map[y - 1][x] == -5)
 		*score -= 2;
-	if (x > 0 && filler->map[y][x - 1] == -2)
+	if (x > 0 && filler->map[y][x - 1] == -5)
 		*score -= 2;
-	if (y < filler->rows - 1 && filler->map[y + 1][x] == -2)
+	if (y < filler->rows - 1 && filler->map[y + 1][x] == -5)
 		*score -= 2;
-	if (x < filler->cols - 1 && filler->map[y][x + 1] == -2)
+	if (x < filler->cols - 1 && filler->map[y][x + 1] == -5)
 		*score -= 2;
-	if (y > 0 && x > 0 && filler->map[y - 1][x - 1] == -2)
+	if (y > 0 && x > 0 && filler->map[y - 1][x - 1] == -5)
 		*score -= 2;
-	if (y > 0 && x < filler->cols - 1 && filler->map[y - 1][x + 1] == -2)
+	if (y > 0 && x < filler->cols - 1 && filler->map[y - 1][x + 1] == -5)
 		*score -= 2;
-	if (y < filler->rows - 1 && x > 0 && filler->map[y + 1][x - 1] == -2)
+	if (y < filler->rows - 1 && x > 0 && filler->map[y + 1][x - 1] == -5)
 		*score -= 2;
 	if (y < filler->rows - 1 && x < filler->cols - 1
-			&& filler->map[y + 1][x + 1] == -2)
+			&& filler->map[y + 1][x + 1] == -5)
 		*score -= 2;
 }
 
