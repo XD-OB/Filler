@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 01:07:21 by obelouch          #+#    #+#             */
-/*   Updated: 2019/04/19 07:32:58 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/03 02:41:22 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,15 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include "libft.h"
+# include "ft_printf.h"
 # define BUFF_SIZE 1000
+
+typedef struct		s_gnl
+{
+	int				fd;
+	char			*content;
+	struct s_gnl	*next;
+}					t_gnl;
 
 typedef struct		s_mult
 {
@@ -33,6 +40,13 @@ typedef struct		s_mult
 	char			*s;
 }					t_mult;
 
+typedef struct		s_bt
+{
+	void			*item;
+	struct s_bt		*left;
+	struct s_bt		*right;
+}					t_bt;
+
 typedef struct		s_list
 {
 	void			*content;
@@ -40,8 +54,26 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+/*
+** BTREE Functions
+*/
+
+t_bt				*bt_create_node(void *item);
+void				bt_insert_item(t_bt **root, void *item,
+		int (*cmpf)(void *, void *));
+t_bt				*bt_search_item(t_bt *root, void *data_ref,
+		int (*cmpf)(void *, void *));
+void				bt_apply_infix(t_bt *root, void (*applyf)(void *));
+void				bt_apply_revinfix(t_bt *root, void (*applyf)(void *));
+void				bt_apply_prefix(t_bt *root, void (*applyf)(void *));
+void				bt_apply_suffix(t_bt *root, void (*applyf)(void *));
+int					bt_size_count(t_bt *root);
+int					bt_level_count(t_bt *root);
+void				bt_free(t_bt **root, void (*freef)(void **));
+
 int					get_next_line(const int fd, char **line);
 void				ft_printhex(int n);
+int					ft_intlen(int n);
 void				*ft_memset(void *b, int c, size_t len);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memcpy(void *dest, const void *src, size_t n);
