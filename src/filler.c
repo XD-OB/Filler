@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filler.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/02 22:16:36 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/02 22:16:55 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
-void		output(t_filler *filler)
+void			output(t_filler *filler)
 {
-	int		x;
-	int		y;
+	int			x;
+	int			y;
 
 	xy_coord(&filler);
 	y = filler->y - filler->begin_y;
@@ -11,11 +23,11 @@ void		output(t_filler *filler)
 	ft_dprintf(1, "%d %d\n", y, x);
 }
 
-int		main(void)
+int				main(void)
 {
 	t_filler	*filler;
 	char		*line;
-	int		i;
+	int			i;
 
 	filler = (t_filler*)malloc(sizeof(t_filler));
 	while (get_next_line(0, &line) > -1)

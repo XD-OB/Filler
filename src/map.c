@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/02 22:30:06 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/02 22:30:36 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
 void		init_map_size(t_filler *filler, char *line)
 {
-	int	i;
+	int		i;
 
 	i = 8;
 	filler->rows = ft_atoi(&line[i]);
@@ -15,12 +27,12 @@ void		init_map_size(t_filler *filler, char *line)
 **	always!		me: -1		opponent: -2
 */
 
-int		*str_int(t_filler *filler)
+int			*str_int(t_filler *filler)
 {
-	int	*segm;
+	int		*segm;
 	char	*line;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	get_next_line(0, &line);

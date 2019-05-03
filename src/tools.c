@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/03 01:12:47 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/03 01:13:09 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
 void	free_tab(char ***tab, int size_y)
@@ -32,7 +44,7 @@ void	ultime_free_filler(t_filler **filler)
 	*filler = NULL;
 }
 
-int	is_allpoint(char *str)
+int		is_allpoint(char *str)
 {
 	int	i;
 

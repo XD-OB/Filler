@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heatmap.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/02 22:17:11 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/02 22:29:56 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
 static void	heatmap_engine(t_filler **filler, int y, int x, int victim)
@@ -21,9 +33,11 @@ static void	heatmap_engine(t_filler **filler, int y, int x, int victim)
 	if (y < (*filler)->rows - 1 && x < (*filler)->cols - 1
 			&& (*filler)->map[y + 1][x + 1] == victim)
 		(*filler)->map[y][x] = siege;
-	if (y < (*filler)->rows - 1 && x > 0 && (*filler)->map[y + 1][x - 1] == victim)
+	if (y < (*filler)->rows - 1 && x > 0 &&
+			(*filler)->map[y + 1][x - 1] == victim)
 		(*filler)->map[y][x] = siege;
-	if (y > 0 && x < (*filler)->cols - 1 && (*filler)->map[y - 1][x + 1] == victim)
+	if (y > 0 && x < (*filler)->cols - 1 &&
+			(*filler)->map[y - 1][x + 1] == victim)
 		(*filler)->map[y][x] = siege;
 }
 
@@ -132,4 +146,3 @@ void		xy_coord(t_filler **filler)
 		}
 	}
 }
-
