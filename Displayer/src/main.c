@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 16:32:39 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/08 23:34:56 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/09 14:50:01 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,11 @@ void			map_size(int *height, int *width)
 int				main(int ac, char **av)
 {
 	t_visual	*visual;
-	char		*line;
 
 	if (!(visual = (t_visual*)malloc(sizeof(t_visual))))
-		return (-1);
+		return (EXIT_FAILURE);
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)
-		return (-1);
+		return (EXIT_FAILURE);
 	TTF_Init();
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 	visual->window = SDL_CreateWindow(ICON_TITLE, 200, 200,
