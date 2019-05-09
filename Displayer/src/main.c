@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 16:32:39 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/02 19:57:40 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/08 23:34:56 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ int				main(int ac, char **av)
 		return (-1);
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)
 		return (-1);
-	if (TTF_Init() == -1)
-		return (-1);
+	TTF_Init();
 	IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
 	visual->window = SDL_CreateWindow(ICON_TITLE, 200, 200,
 			WIN_WIDTH, WIN_HEIGHT, 0);
@@ -48,7 +47,8 @@ int				main(int ac, char **av)
 	SDL_UpdateWindowSurface(visual->window);
 	display_players(visual);
 	map_size(&(visual->height), &(visual->width));
-	update_screen(visual);
+	if (update_screen(visual))
+		return (EXIT_SUCCESS);
 	SDL_UpdateWindowSurface(visual->window);
 	wait_close();
 	free_all(&visual);

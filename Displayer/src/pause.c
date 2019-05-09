@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event.c                                            :+:      :+:    :+:   */
+/*   pause.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/02 19:55:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/02 19:56:17 by obelouch         ###   ########.fr       */
+/*   Created: 2019/05/02 19:58:32 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/08 23:27:05 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "display.h"
 
-void			wait_close(void)
+int				pas_pause(void)
 {
 	SDL_Event	event;
 	int			pass;
@@ -21,27 +21,32 @@ void			wait_close(void)
 	while (pass)
 	{
 		SDL_WaitEvent(&event);
-		if (event.type == SDL_QUIT)
-			pass = 0;
-		else if (event.type == SDL_KEYDOWN)
+		if (event.type == SDL_KEYDOWN)
 		{
-			if (event.key.keysym.sym == SDLK_ESCAPE)
+			if (event.key.keysym.sym == SDLK_SPACE)
 				pass = 0;
+			if (event.key.keysym.sym == SDLK_ESCAPE)
+				return (1);
 		}
 	}
+	return (0);
 }
 
-void			event_trigger(SDL_Event *event)
+int				space_pause(SDL_Event *event)
 {
-	if (event->type == SDL_QUIT)
-		exit(1);
-	if (event->type == SDL_KEYDOWN)
+	int			pass;
+
+	pass = 1;
+	while (pass)
 	{
-		if (event->key.keysym.sym == SDLK_ESCAPE)
-			exit(1);
-		if (event->key.keysym.sym == SDLK_p)
-			space_pause(event);
-		if (event->key.keysym.sym == SDLK_SPACE)
-			pas_pause();
+		SDL_WaitEvent(event);
+		if (event->type == SDL_KEYDOWN)
+		{
+			if (event->key.keysym.sym == SDLK_o)
+				pass = 0;
+			if (event->key.keysym.sym == SDLK_ESCAPE)
+				return (1);
+		}
 	}
+	return (0);
 }

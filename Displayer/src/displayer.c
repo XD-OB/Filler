@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 19:35:56 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/02 19:54:53 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/09 01:06:21 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,23 @@ static void		draw_it(t_visual *v, char *str, int level, SDL_Surface **block)
 }
 
 /*
-**	i:	0:i	1:j
+**	i:	0:i		1:j		2:ret
 */
 
-void			update_screen(t_visual *v)
+static int		return_update(t_visual *v, SDL_Event *event)
+{
+	if (event_trigger(event))
+		return (1);
+	if (visual_score(v))
+		return (0);
+	return (2);
+}
+
+int				update_screen(t_visual *v)
 {
 	SDL_Event	event;
 	char		*line;
-	int			i[2];
+	int			i[3];
 
 	i[0] = -1;
 	v->blocks = (SDL_Surface**)malloc(sizeof(SDL_Surface*)
@@ -68,10 +77,10 @@ void			update_screen(t_visual *v)
 			draw_it(v, &line[++i[1]], i[0], v->blocks);
 			free(line);
 		}
-		event_trigger(&event);
-		if (visual_score(v))
-			return ;
+		if ((i[2] = return_update(v, &event)) != 2)
+			return (i[2]);
 	}
+	return (0);
 }
 
 SDL_Rect		rec_point(int y, int x)

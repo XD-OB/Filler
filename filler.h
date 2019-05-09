@@ -1,4 +1,16 @@
-#ifndef	FILLER_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   filler.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/03 02:53:32 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/03 03:59:32 by obelouch         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef FILLER_H
 # define FILLER_H
 
 # include "./libft/ft_printf.h"
@@ -6,27 +18,26 @@
 # include <stdlib.h>
 # include <limits.h>
 
-typedef struct		s_filler
+typedef struct	s_filler
 {
-	int		me;
-	int		rows;
-	int		cols;
-	int		begin_y;
-	int		begin_x;
-	int		token_y;
-	int		token_x;
+	int			me;
+	int			rows;
+	int			cols;
+	int			begin_y;
+	int			begin_x;
+	int			token_y;
+	int			token_x;
 	char		**token;
-	int		**map;
-	int		x;
-	int		y;
-}			t_filler;
+	int			**map;
+	int			x;
+	int			y;
+}				t_filler;
 
 void			take_sides(t_filler *filler, char **line);
 void			xy_coord(t_filler **filler);
 void			heat_map(t_filler **filler);
-int			is_allpoint(char *str);
-int			*str_int(t_filler *filler);
-void			ultime_free_filler(t_filler **filler);
+int				is_allpoint(char *str);
+int				*str_int(t_filler *filler);
 void			free_filler(t_filler *filler);
 void			free_tab(char ***tab, int size_y);
 char			**get_token(t_filler *filler);

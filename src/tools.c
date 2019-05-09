@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 01:12:47 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/03 01:13:09 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/03 03:59:41 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,9 @@ void	free_filler(t_filler *filler)
 		i++;
 	}
 	i = 0;
-	free(filler->map);
+	if (filler->map)
+		free(filler->map);
 	free_tab(&(filler->token), filler->token_y);
-}
-
-void	ultime_free_filler(t_filler **filler)
-{
-	free_filler(*filler);
-	free(*filler);
-	*filler = NULL;
 }
 
 int		is_allpoint(char *str)

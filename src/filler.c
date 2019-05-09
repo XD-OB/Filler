@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 22:16:36 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/02 22:16:55 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/03 03:59:20 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,6 @@ int				main(void)
 		output(filler);
 		free_filler(filler);
 	}
-	ultime_free_filler(&filler);
+	free(filler);
 	return (EXIT_SUCCESS);
 }

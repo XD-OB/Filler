@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 21:23:04 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/02 21:28:05 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/08 23:26:36 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,12 @@ typedef struct		s_visual
 void				put_pieces(t_visual *visual, int ac, char **av);
 void				free_all(t_visual **visual);
 char				*player_name(void);
-void				space_pause(SDL_Event *event);
-void				pas_pause(void);
+int					space_pause(SDL_Event *event);
+int					pas_pause(void);
 int					visual_score(t_visual *v);
-void				event_trigger(SDL_Event *event);
+int					event_trigger(SDL_Event *event);
 void				wait_close(void);
 void				display_players(t_visual *v);
-void				update_screen(t_visual *v);
+int					update_screen(t_visual *v);
 
 #endif
