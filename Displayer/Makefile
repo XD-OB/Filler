@@ -6,13 +6,15 @@
 #    By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/08 23:44:20 by obelouch          #+#    #+#              #
-#    Updated: 2019/05/09 14:51:59 by obelouch         ###   ########.fr        #
+#    Updated: 2019/05/11 21:10:27 by obelouch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 GREEN = \033[1;32m
 RED = \033[1;31m
 EOC = \033[1;0m
+
+LIB_SDL = -L./SDL/ -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 NAME = ../ob_displayer
 
@@ -29,7 +31,7 @@ all: $(NAME)
 $(NAME):
 	@make -C ../libft re
 	@gcc -c -I ./ $(SRC) $(FLAGS)
-	@gcc -o $(NAME) $(OBJ) -L ../libft/ -lft -L./SDL/ -lSDL2 -lSDL2_image -lSDL2_ttf
+	@gcc -o $(NAME) $(OBJ) -L ../libft/ -lft $(LIB_SDL) 
 	@echo "$(GREEN)Displayer is made in the Root Directory!$(EOC)"
 	@cp vm_exec ../vm_exec
 

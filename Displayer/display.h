@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 21:23:04 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/08 23:26:36 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/11 23:34:00 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../filler.h"
 # include "./SDL/SDL.h"
 # include "./SDL/SDL_image.h"
+# include "./SDL/SDL_mixer.h"
 # include "./SDL/SDL_ttf.h"
 
 # define WIN_WIDTH 1400
@@ -28,6 +29,7 @@
 # define ICON_ATTR "Filler Fights"
 
 # define BK_IMG "./Displayer/img/war.jpg"
+# define BK_MUSIC "./Displayer/music/war.ogg"
 
 # define FONT_TYPE "./Displayer/Fonts/nadiasofia.ttf"
 # define FONT_SIZE 70
@@ -52,6 +54,7 @@ typedef struct		s_visual
 	char			*player2;
 	SDL_Color		color_p1;
 	SDL_Color		color_p2;
+	Mix_Music		*music;
 }					t_visual;
 
 void				put_pieces(t_visual *visual, int ac, char **av);

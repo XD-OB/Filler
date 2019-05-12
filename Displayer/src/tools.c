@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 21:20:51 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/08 23:27:13 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/11 23:46:36 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ void		free_all(t_visual **visual)
 	SDL_FreeSurface((*visual)->win);
 	free((*visual)->player1);
 	free((*visual)->player2);
+	Mix_FreeMusic((*visual)->music);
 	free(*visual);
+	Mix_CloseAudio();
 	TTF_Quit();
 	SDL_Quit();
 }

@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/17 18:19:36 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/03 02:48:31 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/11 14:58:26 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int			prepare_next(t_gnl *node)
 
 	i = 0;
 	if (!(node->content[ft_linelen(node->content)]))
+	{
+		free(node->content);
 		return (0);
+	}
 	tmp = node->content;
 	while (tmp[i] != '\n' && tmp[i])
 		i++;
@@ -86,5 +89,6 @@ int			get_next_line(const int fd, char **line)
 		join_content(&node, buff, ret);
 	*line = ft_strsub(node->content, 0,
 			ft_linelen(node->content));
-	return (prepare_next(node));
+	ret = prepare_next(node);
+	return (ret);
 }
