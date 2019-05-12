@@ -86,7 +86,7 @@ static int	dprintf_null_n(char *format, int *len, size_t n)
 	if (len[2] == -1)
 		return (0);
 	put_spstrn((char*)format, n);
-	return ((format[len[1] - 1] == '%') ? -1 : n);
+	return ((format[len[1] - 1] == '%') ? -1 : (int)n);
 }
 
 int			ft_dnprintf(int fd, size_t n, const char *format, ...)

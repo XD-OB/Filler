@@ -26,6 +26,8 @@ void		free_all(t_visual **visual)
 	SDL_FreeSurface((*visual)->bk_img);
 	SDL_FreeSurface((*visual)->header);
 	SDL_FreeSurface((*visual)->win);
+	SDL_FreeSurface((*visual)->screen);
+	SDL_DestroyWindow((*visual)->window);
 	free((*visual)->player1);
 	free((*visual)->player2);
 	Mix_FreeMusic((*visual)->music);
