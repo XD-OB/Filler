@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 22:16:36 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/11 00:33:19 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/13 02:52:29 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void			output(t_filler *filler)
 	y = filler->y - filler->begin_y;
 	x = filler->x - filler->begin_x;
 	ft_dprintf(1, "%d %d\n", y, x);
+	filler->y = 0;
+	filler->x = 0;
 }
 
 int				main(void)
@@ -37,17 +39,16 @@ int				main(void)
 		free(line);
 		get_next_line(0, &line);
 		free(line);
+		filler->map = (int**)malloc(sizeof(int*) * filler->rows);
 		i = -1;
-		if (!(filler->map = (int**)malloc(sizeof(int*) * filler->rows)))
-			return (EXIT_FAILURE);
 		while (++i < filler->rows)
 			filler->map[i] = str_int(filler);
 		heat_map(&filler);
 		filler->token = get_token(filler);
 		output(filler);
 		free_filler(filler);
+		free(filler->map);
 	}
-	free(line);
 	free(filler);
 	return (EXIT_SUCCESS);
 }

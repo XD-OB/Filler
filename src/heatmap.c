@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 22:17:11 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/12 00:16:00 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/13 02:59:07 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void		heat_map(t_filler **filler)
 		}
 	}
 	//edit_map(filler);
-	i = -1;
+	/*i = -1;
 	while (++i < (*filler)->rows)
 	{
 		j = -1;
@@ -121,7 +121,7 @@ void		heat_map(t_filler **filler)
 		}
 		ft_putstr_fd("\n", 2);
 	}
-	ft_putstr_fd("\n", 2);
+	ft_putstr_fd("\n", 2);*/
 }
 
 static void	score_point(t_filler *filler, int *score, int y, int x)
@@ -188,8 +188,8 @@ void		xy_coord(t_filler **filler)
 
 	i = -1;
 	score = INT_MAX;
-	(*filler)->x = -1;
-	(*filler)->y = -1;
+	(*filler)->x = 0;
+	(*filler)->y = 0;
 	while (++i < (*filler)->rows)
 	{
 		j = -1;

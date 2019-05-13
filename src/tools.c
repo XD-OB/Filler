@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 01:12:47 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/03 03:59:41 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/13 02:38:28 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	free_filler(t_filler *filler)
 		i++;
 	}
 	i = 0;
-	if (filler->map)
-		free(filler->map);
 	free_tab(&(filler->token), filler->token_y);
 }
 

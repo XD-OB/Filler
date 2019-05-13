@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 01:07:21 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/03 02:41:22 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/13 02:14:20 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,6 @@
 # include <limits.h>
 # include "ft_printf.h"
 # define BUFF_SIZE 1000
-
-typedef struct		s_gnl
-{
-	int				fd;
-	char			*content;
-	struct s_gnl	*next;
-}					t_gnl;
 
 typedef struct		s_mult
 {

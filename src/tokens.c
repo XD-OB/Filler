@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/03 00:59:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/03 01:12:44 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/13 02:00:15 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,18 @@ static void		open_token(char **token, t_filler *filler)
 char			**get_token(t_filler *filler)
 {
 	char		**token;
+	char		*line;
 	int			i;
 
 	i = -1;
 	init_token_size(filler);
 	token = (char**)malloc(sizeof(char*) * filler->token_y);
 	while (++i < filler->token_y)
-		get_next_line(0, &token[i]);
+	{
+		get_next_line(0, &line);
+		token[i] = ft_strdup(line);
+		free(line);
+	}
 	real_token(&token, filler);
 	open_token(token, filler);
 	return (token);
