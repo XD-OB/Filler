@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 16:32:39 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/11 23:47:47 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/13 01:13:23 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int				main(int ac, char **av)
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
 	visual->music = Mix_LoadMUS(BK_MUSIC);
 	visual->window = SDL_CreateWindow(ICON_TITLE, 200, 200,
-			WIN_WIDTH, WIN_HEIGHT, 0);
+			WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_RESIZABLE);
 	visual->screen = SDL_GetWindowSurface(visual->window);
 	Mix_PlayMusic(visual->music, -1);
 	put_pieces(visual, ac, av);
