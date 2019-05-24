@@ -6,7 +6,7 @@
 #    By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/20 13:15:54 by obelouch          #+#    #+#              #
-#    Updated: 2019/05/09 15:08:15 by obelouch         ###   ########.fr        #
+#    Updated: 2019/05/24 02:20:33 by obelouch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ EOC = \033[1;0m
 
 NAME = obelouch.filler
 
-FILLER = filler tools heatmap tokens map
+FILLER = main tools heatmap token map output     delete_me
 
 SRC = $(addprefix src/, $(addsuffix .c, $(FILLER)))
 
@@ -33,7 +33,14 @@ $(NAME) :
 	@make -C ./libft re
 	@gcc -c $(SRC) $(FLAGS) -I ./
 	@gcc -o $(NAME) $(OBJ) -L ./libft -lft
-	@echo "$(CYAN)obelouch.filler is Ready :)$(EOC)"
+	@echo "\n"
+	@echo "$(CYAN)  ███████╗██╗██╗     ██╗     ███████╗██████╗"
+	@echo "$(CYAN)  ██╔════╝██║██║     ██║     ██╔════╝██╔══██"
+	@echo "$(CYAN)  █████╗  ██║██║     ██║     █████╗  ██████╔"
+	@echo "$(CYAN)  ██╔══╝  ██║██║     ██║     ██╔══╝  ██╔══██"
+	@echo "$(CYAN)  ██║     ██║███████╗███████╗███████╗██║  ██║"
+	@echo "$(CYAN)  ╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═╝$(EOC)"
+	@echo "   Defeat me if you can!    by:$(GREEN) obelouch\n$(EOC)"
 
 clean :
 	@make -C ./Displayer clean

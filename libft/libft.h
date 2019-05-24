@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 01:07:21 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/13 02:14:20 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/23 23:03:07 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int					ft_strequ(char const *s1, char const *s2);
 int					ft_strnequ(char const *s1, char const *s2, size_t n);
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
+char				*ft_strfreejoin(char **s1, char **s2, int fmode);
 char				*ft_strjoin(char const *s1, char const *s2);
+void				ft_trimstr(char **str);
 char				*ft_strtrim(char const *s);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_itoa(long long int n);
@@ -154,5 +156,14 @@ char				*ft_strpower(int base, int exponent, int x);
 int					ft_max(int a, int b);
 int					ft_min(int a, int b);
 char				*ft_poslltoa(long long int n);
+void				ft_strcombin(char **s1, const char *s2);
+int					len_tab(char **tab);
+void				free_tabstr(char ***tab);
+void				add_2_tab(char ***tab, char *elem);
+char				*join_from_tab(char **tab, int start, char *sep);
+char				**copy_char2(char **tab, int start);
+char				**copy_2_char(char **tab);
+int					**copy_int2(int **old_map, int size_y, int size_x);
+void				ft_epurstr(char **str);
 
 #endif

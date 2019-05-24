@@ -5,40 +5,57 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/03 01:12:47 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/13 02:38:28 by obelouch         ###   ########.fr       */
+/*   Created: 2019/05/23 21:09:57 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/24 00:05:07 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-void	free_tab(char ***tab, int size_y)
+int			skip_line(void)
 {
-	int	i;
+	char	*line;
+	int		ret;
 
-	i = -1;
-	while (++i < size_y)
-		free((*tab)[i]);
-	free(*tab);
+	if ((ret = get_next_line(0, &line)) == -1)
+		return (0);
+	ft_putstr_fd(line, 2);
+	ft_putchar_fd('\n', 2);
+	if (ret == 0)
+	{
+		free(line);
+		line = NULL;
+		return (0);
+	}
+	free(line);
+	line = NULL;
+	return (1);
 }
 
-void	free_filler(t_filler *filler)
+void		free_filler(t_filler *filler)
 {
-	int	i;
+	int		i;
 
 	i = 0;
-	while (i < filler->rows)
+	while (filler->map[i])
 	{
 		free(filler->map[i]);
 		i++;
 	}
+	free(filler->map);
 	i = 0;
-	free_tab(&(filler->token), filler->token_y);
+	while (filler->heatmap[i])
+	{
+		free(filler->heatmap[i]);
+		i++;
+	}
+	free(filler->heatmap);
+	free_tabstr(&filler->token);
 }
 
-int		is_allpoint(char *str)
+int			is_allpoint(char *str)
 {
-	int	i;
+	int     i;
 
 	i = 0;
 	while (str[i])

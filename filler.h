@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filler.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
+/*   By: obelouch <obelouch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/03 02:53:32 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/11 16:30:47 by obelouch         ###   ########.fr       */
+/*   Created: 2019/05/23 06:45:05 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/24 02:18:34 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,25 @@ typedef struct	s_filler
 	int			token_y;
 	int			token_x;
 	char		**token;
+	int			**heatmap;
 	int			**map;
+	int			p_y;
+	int			p_x;
 	int			x;
 	int			y;
 }				t_filler;
 
-void			take_sides(t_filler *filler, char **line);
-void			xy_coord(t_filler **filler);
-void			heat_map(t_filler **filler);
-int				is_allpoint(char *str);
-int				*str_int(t_filler *filler);
-void			free_filler(t_filler *filler);
-void			free_tab(char ***tab, int size_y);
-char			**get_token(t_filler *filler);
-void			init_map_size(t_filler *filler, char *line);
+void		free_filler(t_filler *filler);
+int			is_allpoint(char *str);
+int			skip_line(void);
+int			take_infos(t_filler *filler);
+int			int_map(t_filler *filler);
+int			get_token(t_filler *filler);
+int			heat_map(t_filler *filler);
+void		free_filler(t_filler *filler);
+void		output(t_filler *filler);
+
+void		print_matrice(int **tab, int rows, int cols);
+void		print_tab(char **tab);
 
 #endif
