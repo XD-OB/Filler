@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 05:31:17 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/24 08:50:27 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/24 09:00:46 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct			s_movie
 {
 	char				**map;
 	char				**token;
+	struct s_movie		*head;
 	struct s_movie		*prev;
 	struct s_movie		*next;
 }						t_movie;

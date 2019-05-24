@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 05:29:31 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/24 08:49:57 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/24 09:00:36 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,15 @@ void	free_display(t_display *display)
 	free(display->p2);
 }
 
+t_movie	*add_part(t_movie *prev)
+{
+	t_movie		*node;
+
+	node = (t_movie*)malloc(sizeof(t_movie));
+	node->next = NULL;
+	node->prev = prev;
+}
+
 int		main(int ac, char **av)
 {
 	t_display	display;
@@ -100,8 +109,12 @@ int		main(int ac, char **av)
 
 	if (!get_players(&display))
 		return (EXIT_FAILURE);
+	begin = add_part(NULL);
 	while (get_next_line(0, &line) > 0 && !ft_strncmp(line, "Plateau"))
-	charge_movie(begin);
+	{
+		charge_movie(begin);
+		begin = begin->next;
+	}
 	/*if (!init_sdl())
 		return (EXIT_FAILURE);
 	if (!create_window_render(&display))
