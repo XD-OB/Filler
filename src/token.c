@@ -6,7 +6,7 @@
 /*   By: obelouch <obelouch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 09:59:53 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/24 02:22:38 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/24 05:21:40 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ static void		real_token(t_filler *filler)
 	}
 }
 
-
 int				get_token(t_filler *filler)
 {
 	int		i;
@@ -126,8 +125,5 @@ int				get_token(t_filler *filler)
 			j++;
 		filler->begin_x = ft_min(j, filler->begin_x);
 	}
-	//ft_dprintf(2, "token_y= %d   token_x= %d\n", filler->token_y, filler->token_x);		//////////
-	//print_tab(filler->token);															/////////
-	//ft_dprintf(2, "begin_y= %d   begin_x= %d\n", filler->begin_y, filler->begin_x);		/////////
 	return (1);
 }

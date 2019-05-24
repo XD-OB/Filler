@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 22:52:34 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/24 02:22:47 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/24 05:23:52 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,27 @@ static int	is_ok(int coord)
 
 static void	heatmap_engine(t_filler *filler, int y, int x, int siege)
 {
-	if (x + 1 < filler->cols && is_ok(filler->heatmap[y][x + 1]))
+	if (x + 1 < filler->cols &&
+			is_ok(filler->heatmap[y][x + 1]))
 		filler->heatmap[y][x + 1] = siege;
 	if (x - 1 >= 0 && is_ok(filler->heatmap[y][x - 1]))
 		filler->heatmap[y][x - 1] = siege;
-	if (y + 1 < filler->rows && is_ok(filler->heatmap[y + 1][x]))
+	if (y + 1 < filler->rows &&
+			is_ok(filler->heatmap[y + 1][x]))
 		filler->heatmap[y + 1][x] = siege;
 	if (y - 1 >= 0 && is_ok(filler->heatmap[y - 1][x]))
 		filler->heatmap[y - 1][x] = siege;
-	if (y - 1 >= 0 && x - 1 >= 0 && is_ok(filler->heatmap[y - 1][x - 1]))
+	if (y - 1 >= 0 && x - 1 >= 0 &&
+			is_ok(filler->heatmap[y - 1][x - 1]))
 		filler->heatmap[y - 1][x - 1] = siege;
-	if (y + 1 < filler->rows && x + 1 < filler->cols && is_ok(filler->heatmap[y + 1][x + 1]))
+	if (y + 1 < filler->rows && x + 1 < filler->cols &&
+			is_ok(filler->heatmap[y + 1][x + 1]))
 		filler->heatmap[y + 1][x + 1] = siege;
-	if (x - 1 >= 0 && y + 1 < filler->rows && is_ok(filler->heatmap[y + 1][x - 1]))
+	if (x - 1 >= 0 && y + 1 < filler->rows &&
+			is_ok(filler->heatmap[y + 1][x - 1]))
 		filler->heatmap[y + 1][x - 1] = siege;
-	if (y - 1 >= 0 && x + 1 < filler->cols && is_ok(filler->heatmap[y - 1][x + 1]))
+	if (y - 1 >= 0 && x + 1 < filler->cols &&
+			is_ok(filler->heatmap[y - 1][x + 1]))
 		filler->heatmap[y - 1][x + 1] = siege;
 }
 
@@ -81,24 +87,24 @@ int			heat_map(t_filler *filler)
 	int		i;
 	int		j;
 
-	if (!(filler->heatmap = copy_int2(filler->map, filler->rows, filler->cols)))
+	if (!(filler->heatmap =
+		copy_int2(filler->map, filler->rows, filler->cols)))
 		return (0);
-	wave = -1;
-	while (++wave < ft_max(filler->cols, filler->rows))
+	wave = 0;
+	while (wave < ft_max(filler->cols, filler->rows))
 	{
 		i = -1;
 		affect_victim_siege(vic_sieg, wave);
 		while (++i < filler->rows)
 		{
-			j= -1;
+			j = -1;
 			while (++j < filler->cols)
 				if (filler->heatmap[i][j] == vic_sieg[0] ||
 						filler->heatmap[i][j] == vic_sieg[1])
 					heatmap_engine(filler, i, j, vic_sieg[2]);
 		}
+		wave++;
 	}
 	put_me_in(filler);
-	//ft_putstr_fd("--------HEATMAP---------\n", 2);
-	//print_matrice(filler->heatmap, filler->rows, filler->cols);
 	return (1);
 }

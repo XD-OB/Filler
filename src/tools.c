@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 21:09:57 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/24 00:05:07 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/24 05:25:31 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int			skip_line(void)
 
 	if ((ret = get_next_line(0, &line)) == -1)
 		return (0);
-	ft_putstr_fd(line, 2);
-	ft_putchar_fd('\n', 2);
 	if (ret == 0)
 	{
 		free(line);
@@ -55,7 +53,7 @@ void		free_filler(t_filler *filler)
 
 int			is_allpoint(char *str)
 {
-	int     i;
+	int		i;
 
 	i = 0;
 	while (str[i])
