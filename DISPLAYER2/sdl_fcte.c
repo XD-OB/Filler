@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 08:05:48 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 02:23:13 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 07:03:57 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int		load_music(t_display *display)
 				Mix_GetError());
 		return (0);
 	}
-	Mix_PlayMusic(display->music, -1);
+	Mix_PlayMusic(display->music, display->mute);
 	return (1);
 }
 

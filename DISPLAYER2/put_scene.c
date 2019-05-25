@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/25 02:18:43 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 02:19:30 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 07:19:21 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ void				display_players(t_display *display)
 
 	i = 0;
 	font = TTF_OpenFont(FONT_TYPE, FONT_SIZE);
-	tmp = TTF_RenderText_Blended(font, display->p1, display->color_p1);
+	tmp = TTF_RenderText_Blended(font, display->p1,
+			display->color_p1[display->clr]);
 	text = SDL_CreateTextureFromSurface(display->render, tmp);
 	SDL_QueryTexture(text, NULL, NULL, &pos.w, &pos.h);
 	pos.y = 8;
@@ -30,7 +31,8 @@ void				display_players(t_display *display)
 	SDL_RenderCopy(display->render, text, NULL, &pos);
 	SDL_FreeSurface(tmp);
 	SDL_DestroyTexture(text);
-	tmp = TTF_RenderText_Blended(font, display->p2, display->color_p2);
+	tmp = TTF_RenderText_Blended(font, display->p2,
+			display->color_p2[display->clr]);
 	text = SDL_CreateTextureFromSurface(display->render, tmp);
 	SDL_QueryTexture(text, NULL, NULL, &pos.w, &pos.h);
 	pos.y = 8;
@@ -52,6 +54,6 @@ void				put_scene(t_display *display)
 	SDL_SetRenderDrawColor(display->render, 200, 200, 200, 255);
 	SDL_RenderFillRect(display->render, &rect);
 	rect = ft_rect(600, 600, (HEIGHT / 2) - 300, (WIDTH / 2) - 300);
-	SDL_SetRenderDrawColor(display->render, 100, 100, 100, 255);
+	SDL_SetRenderDrawColor(display->render, 200, 200, 200, 255);
 	SDL_RenderFillRect(display->render, &rect);
 }

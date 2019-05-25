@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 05:31:17 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 02:22:43 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 08:57:49 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,14 @@
 # define WIDTH 1400 
 # define HEIGHT 1000 
 
+#define BLOCK(x) (600 / x - 1)
+
 # define TITLE "Bring Your Filler And Let's Fight!"
 # define BK_MUSIC "./music/war.ogg"
 # define BK_IMG "./img/war.jpg"
+# define FONT_WTYPE	"./Fonts/GROBOLD.ttf"
 # define FONT_TYPE	"./Fonts/nadiasofia.ttf"
+# define FONT_WSIZE	90
 # define FONT_SIZE	90
 
 typedef struct			s_movie
@@ -48,8 +52,16 @@ typedef struct			s_display
 	int					score_p2;
 	char				*p1;
 	char				*p2;
-	SDL_Color			color_p1;
-	SDL_Color			color_p2;
+	int					mode;
+	int					pause;
+	int					speed;
+	int					mute;
+	int					clr;
+	int					pass;
+	SDL_Color			color_p1[3];
+	SDL_Color			color_p11[3];
+	SDL_Color			color_p2[3];
+	SDL_Color			color_p22[3];
 }						t_display;
 
 /*
@@ -63,13 +75,27 @@ SDL_Texture				*load_img(char *path, SDL_Renderer *render);
 /*
 **			   		    -----------------------------------------------
 */
+void					init_display(t_display *display);
 void					put_scene(t_display *display);
 void					display_players(t_display *display);
-void					put_pieces(t_display *display, int ac, char **av);
+void					put_pieces(t_display *display);
 SDL_Rect				ft_rect(int height, int width, int y, int x);
+void					draw_result(t_display *display, t_movie *curr);
+void					draw_current(t_display *display, t_movie *curr);
+void					draw_prev(t_display *display, t_movie **curr);
+void					draw_next(t_display *display, t_movie **curr);
+void					loop_game(t_display *display, t_movie *curr);
+void					take_screenshot(t_display *display);
+void					speed(t_display *display, int way);
+void					change_color(t_display *display, t_movie *curr);
+void					reset_game(t_display *display, t_movie **curr);
+void					off_on_music(t_display *display);
+void					draw_rect(t_display *display, t_movie *curr,
+									int i, int j);
 /*
 **		parsing:		-----------------------------------------------
 */
+void					init_display(t_display *display);
 int						record_game(t_display *display);
 int						get_players(t_display *display);
 t_movie					*ft_movie_addnode(t_movie **head);
@@ -77,8 +103,5 @@ t_movie					*ft_movie_new(void);
 void					free_display(t_display *display);
 void					free_node(t_movie *movie);
 void					free_movie(t_movie **head);
-
-void					print_tab(char **tab);
-void					print_list(t_movie *movie);
 
 #endif
