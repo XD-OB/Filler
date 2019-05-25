@@ -1,33 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   delete_me.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/24 05:29:31 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 02:24:38 by obelouch         ###   ########.fr       */
+/*   Created: 2019/05/24 22:23:45 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/24 22:36:01 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "displayer.h"
 
-int				main(int ac, char **av)
+void	print_tab(char **tab)
 {
-	t_display	display;
+	int	i;
 
-	if (!init_sdl())
-		return (EXIT_FAILURE);
-	if (!create_window_render(&display))
-		return (EXIT_FAILURE);
-	if (!record_game(&display))
-		return (EXIT_FAILURE);
-	load_music(&display);
-	put_pieces(&display, ac, av);
-	//print_list(display.movie);
-	put_pieces(&display, ac, av);
-	SDL_Delay(8000);
-	free_display(&display);
-	free_sdl(&display);
-	return (EXIT_SUCCESS);
+	i = 0;
+	while (tab[i])
+	{
+		ft_putendl(tab[i]);
+		i++;
+	}
+}
+
+void	print_list(t_movie *movie)
+{
+	int	i;
+
+	while (movie)
+	{
+		i = 0;
+		ft_putstr("----------------------\n");
+		while (movie->map[i])
+		{
+			ft_putendl(movie->map[i]);
+			i++;
+		}
+		ft_putstr("----------------------\n");
+		movie = movie->next;
+	}
 }

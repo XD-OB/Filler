@@ -1,33 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/24 05:29:31 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 02:24:38 by obelouch         ###   ########.fr       */
+/*   Created: 2019/05/24 22:27:35 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/24 23:01:54 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "displayer.h"
 
-int				main(int ac, char **av)
+void	free_movie(t_movie **head)
 {
-	t_display	display;
+	t_movie		*tmp;
 
-	if (!init_sdl())
-		return (EXIT_FAILURE);
-	if (!create_window_render(&display))
-		return (EXIT_FAILURE);
-	if (!record_game(&display))
-		return (EXIT_FAILURE);
-	load_music(&display);
-	put_pieces(&display, ac, av);
-	//print_list(display.movie);
-	put_pieces(&display, ac, av);
-	SDL_Delay(8000);
-	free_display(&display);
-	free_sdl(&display);
-	return (EXIT_SUCCESS);
+	while (*head)
+	{
+		tmp = *head;
+		free_tabstr(&tmp->map);
+		tmp->prev = NULL;
+		(*head) = (*head)->next;
+		free(tmp);
+	}
+}
+
+void	free_node(t_movie *movie)
+{
+	free_tabstr(&movie->map);
+	movie->prev->next = movie->next;
+	movie->next->prev = movie->prev;
+	free(movie);
+}
+
+void	free_display(t_display *display)
+{
+	free(display->p1);
+	free(display->p2);
+	free_movie(&(display->movie));
 }
