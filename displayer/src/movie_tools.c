@@ -1,36 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   movie_tools.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/24 05:29:31 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 07:45:32 by obelouch         ###   ########.fr       */
+/*   Created: 2019/05/24 22:32:55 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/25 09:20:16 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "displayer.h"
 
-int				main(int ac, char **av)
+t_movie			*ft_movie_new(void)
 {
-	t_display	display;
+	t_movie	*node;
+
+	if (!(node = (t_movie*)malloc(sizeof(t_movie))))
+		return (NULL);
+	node->map = NULL;
+	node->next = NULL;
+	node->prev = NULL;
+	return (node);
+}
+
+t_movie			*ft_movie_addnode(t_movie **head)
+{
 	t_movie		*curr;
 
-	(void)ac;
-	(void)av;
-	if (!init_sdl())
-		return (EXIT_FAILURE);
-	if (!create_window_render(&display))
-		return (EXIT_FAILURE);
-	if (!record_game(&display))
-		return (EXIT_FAILURE);
-	init_display(&display);
-	load_music(&display);
-	curr = display.movie;
-	draw_current(&display, curr);
-	loop_game(&display, curr);
-	free_display(&display);
-	free_sdl(&display);
-	return (EXIT_SUCCESS);
+	if (!*head)
+	{
+		*head = ft_movie_new();
+		return (*head);
+	}
+	curr = *head;
+	while (curr->next)
+		curr = curr->next;
+	curr->next = ft_movie_new();
+	curr->next->prev = curr;
+	return (curr->next);
 }

@@ -5,54 +5,61 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/02 21:20:51 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/11 23:46:36 by obelouch         ###   ########.fr       */
+/*   Created: 2019/05/24 08:05:48 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/25 09:08:15 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "display.h"
+#include "displayer.h"
 
-void		free_all(t_visual **visual)
+void	free_sdl(t_display *display)
 {
-	int		i;
-
-	i = -1;
-	while (++i < (*visual)->height * (*visual)->width)
-	{
-		if ((*visual)->blocks[i])
-			SDL_FreeSurface((*visual)->blocks[i]);
-	}
-	SDL_FreeSurface((*visual)->arena);
-	SDL_FreeSurface((*visual)->bk_img);
-	SDL_FreeSurface((*visual)->header);
-	SDL_FreeSurface((*visual)->win);
-	SDL_FreeSurface((*visual)->screen);
-	SDL_DestroyWindow((*visual)->window);
-	free((*visual)->player1);
-	free((*visual)->player2);
-	Mix_FreeMusic((*visual)->music);
-	free(*visual);
 	Mix_CloseAudio();
 	TTF_Quit();
+	IMG_Quit();
+	SDL_DestroyRenderer(display->render);
+	SDL_DestroyWindow(display->window);
 	SDL_Quit();
 }
 
-char		*player_name(void)
+int		load_music(t_display *display)
 {
-	char	*line;
-	char	*str;
-	int		i;
+	display->music = Mix_LoadMUS(BK_MUSIC);
+	if (!display->music)
+	{
+		ft_dprintf(2, "Error will Loading the Music: %s\n",
+				Mix_GetError());
+		return (0);
+	}
+	Mix_PlayMusic(display->music, display->mute);
+	return (1);
+}
 
-	i = 3;
-	get_next_line(0, &line);
-	while (line[i] != ']')
-		i++;
-	while (line[i] != '.')
-		i--;
-	line[i] = '\0';
-	while (line[i] != '/')
-		i--;
-	str = ft_strdup(&line[i + 1]);
-	free(line);
-	return (str);
+void	free_movie(t_movie **head)
+{
+	t_movie		*tmp;
+
+	while (*head)
+	{
+		tmp = *head;
+		free_tabstr(&tmp->map);
+		tmp->prev = NULL;
+		(*head) = (*head)->next;
+		free(tmp);
+	}
+}
+
+void	free_node(t_movie *movie)
+{
+	free_tabstr(&movie->map);
+	movie->prev->next = movie->next;
+	movie->next->prev = movie->prev;
+	free(movie);
+}
+
+void	free_display(t_display *display)
+{
+	free(display->p1);
+	free(display->p2);
+	free_movie(&(display->movie));
 }

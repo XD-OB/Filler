@@ -1,1 +1,0 @@
-gcc *.c -I/Users/obelouch -L/Users/obelouch/.brew/lib/ -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -L../libft -lft -o tst

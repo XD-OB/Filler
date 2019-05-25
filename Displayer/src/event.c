@@ -5,54 +5,64 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/02 19:55:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/09 01:16:14 by obelouch         ###   ########.fr       */
+/*   Created: 2019/05/25 07:43:14 by obelouch          #+#    #+#             */
+/*   Updated: 2019/05/25 09:51:28 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "display.h"
+#include "displayer.h"
 
-void			wait_close(void)
+void			init_display(t_display *display)
 {
-	SDL_Event	event;
-	int			pass;
-
-	pass = 1;
-	while (pass)
-	{
-		SDL_WaitEvent(&event);
-		if (event.type == SDL_QUIT)
-			pass = 0;
-		else if (event.type == SDL_KEYDOWN)
-		{
-			if (event.key.keysym.sym == SDLK_ESCAPE)
-				pass = 0;
-		}
-	}
+	display->clr = 0;
+	display->pass = 1;
+	display->pause = 1;
+	display->speed = 30;
+	display->mute = -1;
 }
 
-int				event_trigger(SDL_Event *event)
+static void		event_keyboard(t_display *display, SDL_Event event,
+						t_movie **curr)
 {
-	if (event->type == SDL_QUIT)
-		return (1);
-	if (event->type == SDL_KEYDOWN)
+	if (event.key.keysym.sym == SDLK_ESCAPE)
+		display->pass = 0;
+	if (event.key.keysym.sym == SDLK_UP)
+		draw_next(display, curr);
+	if (event.key.keysym.sym == SDLK_DOWN)
+		draw_prev(display, curr);
+	if (event.key.keysym.sym == SDLK_SPACE)
+		display->pause = (display->pause) ? 0 : 1;
+	if (event.key.keysym.sym == SDLK_r)
+		reset_game(display, curr);
+	if (event.key.keysym.sym == SDLK_c)
+		change_color(display, *curr);
+	if (event.key.keysym.sym == SDLK_RIGHT)
+		speed(display, 1);
+	if (event.key.keysym.sym == SDLK_LEFT)
+		speed(display, -1);
+	if (event.key.keysym.sym == SDLK_p)
+		take_screenshot(display);
+	if (event.key.keysym.sym == SDLK_m)
+		off_on_music(display);
+}
+
+void			loop_game(t_display *display, t_movie *curr)
+{
+	SDL_Event	event;
+
+	while (display->pass)
 	{
-		if (event->key.keysym.sym == SDLK_ESCAPE)
-			return (1);
-		if (event->key.keysym.sym == SDLK_p)
+		while (SDL_PollEvent(&event))
 		{
-			if (space_pause(event))
-				return (1);
-			else
-				return (0);
+			if (event.type == SDL_QUIT)
+				display->pass = 0;
+			if (event.type == SDL_KEYDOWN)
+				event_keyboard(display, event, &curr);
 		}
-		if (event->key.keysym.sym == SDLK_SPACE)
+		if (!display->pause)
 		{
-			if (pas_pause())
-				return (1);
-			else
-				return (0);
+			draw_next(display, &curr);
+			SDL_Delay(display->speed);
 		}
 	}
-	return (0);
 }
