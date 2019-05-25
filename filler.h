@@ -6,7 +6,7 @@
 /*   By: obelouch <obelouch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 06:45:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/24 02:18:34 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 23:18:33 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,14 @@ typedef struct	s_filler
 	int			y;
 }				t_filler;
 
-void		free_filler(t_filler *filler);
-int			is_allpoint(char *str);
-int			skip_line(void);
-int			take_infos(t_filler *filler);
-int			int_map(t_filler *filler);
-int			get_token(t_filler *filler);
-int			heat_map(t_filler *filler);
-void		free_filler(t_filler *filler);
-void		output(t_filler *filler);
-
-void		print_matrice(int **tab, int rows, int cols);
-void		print_tab(char **tab);
+void			free_filler(t_filler *filler);
+int				is_allpoint(char *str);
+int				skip_line(void);
+int				take_infos(t_filler *filler);
+int				int_map(t_filler *filler);
+int				get_token(t_filler *filler);
+int				heat_map(t_filler *filler);
+void			free_filler(t_filler *filler);
+void			output(t_filler *filler);
 
 #endif

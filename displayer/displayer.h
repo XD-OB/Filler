@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 05:31:17 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 10:39:37 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 23:03:45 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct			s_display
 	int					clr;
 	int					frm;
 	int					pass;
-	int					frame[4];
+	int					frame[5];
 	SDL_Color			color_p1[3];
 	SDL_Color			color_p11[3];
 	SDL_Color			color_p2[3];
@@ -86,7 +86,6 @@ void					draw_prev(t_display *display, t_movie **curr);
 void					draw_next(t_display *display, t_movie **curr);
 void					loop_game(t_display *display, t_movie *curr);
 void					take_screenshot(t_display *display);
-void					speed(t_display *display, int way);
 void					change_color(t_display *display, t_movie *curr);
 void					reset_game(t_display *display, t_movie **curr);
 void					off_on_music(t_display *display);

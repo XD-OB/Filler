@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/25 07:21:34 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 10:40:14 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 23:03:13 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,6 @@ void		change_color(t_display *display, t_movie *curr)
 	if (display->clr == 3)
 		display->clr = 0;
 	draw_current(display, curr);
-}
-
-void		speed(t_display *display, int way)
-{
-	if (way == 1)
-	{
-		if (display->frm < 3)
-			display->frm++;
-	}
-	else if (way == -1)
-	{
-		if (display->frm > 0)
-			display->frm--;
-	}
 }
 
 void		off_on_music(t_display *display)
