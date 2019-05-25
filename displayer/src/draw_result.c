@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/25 08:55:01 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 09:51:13 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 20:44:57 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,16 @@ static void	display_score2(t_display *display)
 	SDL_Surface	*tmp;
 	SDL_Rect	p;
 	TTF_Font	*font;
-	char		*str;
+	char		*str[2];
 
 	font = TTF_OpenFont("./Fonts/arial.ttf", 60);
-	str = ft_itoa(display->score_p2);
-	str = ft_strjoin("score: ", str);
-	tmp = TTF_RenderText_Blended(font, str,
+	str[0] = ft_itoa(display->score_p2);
+	str[1] = str[0];
+	str[0] = ft_strjoin("score: ", str[0]);
+	free(str[1]);
+	tmp = TTF_RenderText_Blended(font, str[0],
 			display->color_p2[display->clr]);
-	free(str);
+	free(str[0]);
 	texture = SDL_CreateTextureFromSurface(display->render, tmp);
 	SDL_FreeSurface(tmp);
 	SDL_QueryTexture(texture, NULL, NULL, &p.w, &p.h);
@@ -42,14 +44,16 @@ static void	display_score1(t_display *display)
 	SDL_Surface	*tmp;
 	SDL_Rect	p;
 	TTF_Font	*font;
-	char		*str;
+	char		*str[2];
 
 	font = TTF_OpenFont("./Fonts/arial.ttf", 60);
-	str = ft_itoa(display->score_p1);
-	str = ft_strjoin("score: ", str);
-	tmp = TTF_RenderText_Blended(font, str,
+	str[0] = ft_itoa(display->score_p1);
+	str[1] = str[0];
+	str[0] = ft_strjoin("score: ", str[0]);
+	free(str[1]);
+	tmp = TTF_RenderText_Blended(font, str[0],
 			display->color_p1[display->clr]);
-	free(str);
+	free(str[0]);
 	texture = SDL_CreateTextureFromSurface(display->render, tmp);
 	SDL_FreeSurface(tmp);
 	SDL_QueryTexture(texture, NULL, NULL, &p.w, &p.h);

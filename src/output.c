@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 23:45:03 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/24 05:20:09 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 22:44:33 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,21 @@ static int	the_score(t_filler *filler, int y, int x)
 	return ((v[3] == 1) ? v[4] : INT_MAX);
 }
 
-void		xy_coord(t_filler *filler)
+void		output(t_filler *filler)
 {
 	int		score;
 	int		tmp;
 	int		i;
 	int		j;
 
-	i = 0;
+	i = -1;
 	score = INT_MAX;
-	while (i < filler->rows)
+	filler->y = 0;
+	filler->x = 0;
+	while (++i < filler->rows)
 	{
-		j = 0;
-		while (j < filler->cols)
+		j = -1;
+		while (++j < filler->cols)
 		{
 			tmp = the_score(filler, i, j);
 			if (tmp < score)
@@ -73,19 +75,8 @@ void		xy_coord(t_filler *filler)
 				filler->x = j;
 				score = tmp;
 			}
-			j++;
 		}
-		i++;
 	}
-}
-
-void		output(t_filler *filler)
-{
-	int		y;
-	int		x;
-
-	xy_coord(filler);
-	y = filler->y - filler->begin_y;
-	x = filler->x - filler->begin_x;
-	ft_printf("%d %d\n", y, x);
+	ft_printf("%d %d\n", filler->y - filler->begin_y,
+						filler->x - filler->begin_x);
 }

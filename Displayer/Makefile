@@ -6,7 +6,7 @@
 #    By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/08 23:44:20 by obelouch          #+#    #+#              #
-#    Updated: 2019/05/25 10:24:39 by obelouch         ###   ########.fr        #
+#    Updated: 2019/05/25 22:54:09 by obelouch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,6 @@ $(NAME):
 	@make -C ../libft re
 	@gcc -c -I ./ $(SRC) $(FLAGS)
 	@gcc -o $(NAME) $(OBJ) -L ../libft/ -lft $(LIB_SDL) 
-	@echo "$(GREEN) Displayer is Created Enjoy :-)$(EOC)"
 	@cp vm_exec ../vm_exec
 
 clean:
