@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/25 02:18:43 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 09:16:28 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 10:31:40 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,9 @@ void				display_players(t_display *display)
 	tmp = TTF_RenderText_Blended(font, display->p2,
 			display->color_p2[display->clr]);
 	text = SDL_CreateTextureFromSurface(display->render, tmp);
-	pos = ft_rect(0, 0, 8, WIDTH - 100 - pos.x);
 	SDL_QueryTexture(text, NULL, NULL, &pos.w, &pos.h);
+	pos.y = 8;
+	pos.x = WIDTH - 100 - pos.w;
 	SDL_RenderCopy(display->render, text, NULL, &pos);
 	SDL_FreeSurface(tmp);
 	SDL_DestroyTexture(text);

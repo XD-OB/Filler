@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 05:31:17 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 09:50:18 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 10:39:37 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,11 @@ typedef struct			s_display
 	char				*p2;
 	int					mode;
 	int					pause;
-	int					speed;
 	int					mute;
 	int					clr;
+	int					frm;
 	int					pass;
+	int					frame[4];
 	SDL_Color			color_p1[3];
 	SDL_Color			color_p11[3];
 	SDL_Color			color_p2[3];

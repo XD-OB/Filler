@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/25 07:21:34 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 09:22:28 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 10:40:14 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,14 @@ void		speed(t_display *display, int way)
 {
 	if (way == 1)
 	{
-		if (way > 2)
-			display->speed /= 2;
+		if (display->frm < 3)
+			display->frm++;
 	}
 	else if (way == -1)
-		display->speed *= 1.2;
+	{
+		if (display->frm > 0)
+			display->frm--;
+	}
 }
 
 void		off_on_music(t_display *display)

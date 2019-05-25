@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/25 07:43:14 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 09:51:28 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/25 10:40:36 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,12 @@ void			init_display(t_display *display)
 	display->clr = 0;
 	display->pass = 1;
 	display->pause = 1;
-	display->speed = 30;
 	display->mute = -1;
+	display->frm = 0;
+	display->frame[0] = 24;
+	display->frame[1] = 70;
+	display->frame[2] = 260;
+	display->frame[3] = 620;
 }
 
 static void		event_keyboard(t_display *display, SDL_Event event,
@@ -62,7 +66,7 @@ void			loop_game(t_display *display, t_movie *curr)
 		if (!display->pause)
 		{
 			draw_next(display, &curr);
-			SDL_Delay(display->speed);
+			SDL_Delay(1000 / display->frame[display->frm]);
 		}
 	}
 }

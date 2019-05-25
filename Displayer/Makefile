@@ -6,7 +6,7 @@
 #    By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/08 23:44:20 by obelouch          #+#    #+#              #
-#    Updated: 2019/05/25 10:15:53 by obelouch         ###   ########.fr        #
+#    Updated: 2019/05/25 10:24:39 by obelouch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ EOC = \033[1;0m
 
 LIB_SDL = -L /Users/obelouch/.brew/lib/ -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer\
 
-NAME = ../ob_displayer
+NAME = ob_displayer
 
 DISPLAYER_SRC = main bonus draw draw_rect draw_result event\
 				infos_game movie_tools put_pieces put_scene\
