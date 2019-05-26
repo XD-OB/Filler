@@ -6,17 +6,25 @@
 /*   By: obelouch <obelouch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 06:46:10 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/24 04:46:03 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/26 09:33:30 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
+void		init_filler(t_filler *filler)
+{
+	filler->x = 0;
+	filler->y = 0;
+	filler->p_y = -1;
+	filler->p_x = -1;
+}
+
 int			main(void)
 {
 	t_filler	filler;
 
-	filler.x = 0;
+	init_filler(&filler);
 	while (1)
 	{
 		if (!take_infos(&filler))
