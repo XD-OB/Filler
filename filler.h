@@ -6,7 +6,7 @@
 /*   By: obelouch <obelouch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 06:45:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/26 23:00:23 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/27 06:18:34 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,16 @@ typedef struct	s_filler
 	int			y;
 }				t_filler;
 
+void			init_filler(t_filler *filler);
 void			free_filler(t_filler *filler);
 int				is_allpoint(char *str);
 int				skip_line(void);
 int				take_infos(t_filler *filler);
 int				int_map(t_filler *filler);
 int				get_token(t_filler *filler);
+void			put_me_in(t_filler *filler);
+void			coord_max(t_filler *filler);
+int				heatmap_extrem(t_filler *filler);
 int				heat_map(t_filler *filler);
 void			free_filler(t_filler *filler);
 void			output(t_filler *filler);

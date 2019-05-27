@@ -6,7 +6,7 @@
 #    By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/04/20 13:15:54 by obelouch          #+#    #+#              #
-#    Updated: 2019/05/25 22:54:49 by obelouch         ###   ########.fr        #
+#    Updated: 2019/05/27 06:14:45 by obelouch         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ EOC = \033[1;0m
 
 NAME = obelouch.filler
 
-FILLER = main tools heatmap token map output
+FILLER = main tools heatmap extrem token map output
 
 SRC = $(addprefix src/, $(addsuffix .c, $(FILLER)))
 

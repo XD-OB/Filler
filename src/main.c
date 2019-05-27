@@ -6,26 +6,18 @@
 /*   By: obelouch <obelouch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 06:46:10 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/26 23:00:55 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/27 06:19:06 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "filler.h"
 
-void		init_filler(t_filler *filler)
-{
-	filler->x = 0;
-	filler->y = 0;
-	filler->p_y = -1;
-	filler->p_x = -1;
-	filler->xm = -1;
-	filler->ym = -1;
-}
-
-int			main(void)
+int				main(int ac, char **av)
 {
 	t_filler	filler;
 
+	(void)ac;
+	(void)av;
 	init_filler(&filler);
 	while (1)
 	{
