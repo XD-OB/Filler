@@ -6,7 +6,7 @@
 /*   By: obelouch <obelouch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 06:46:10 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/26 09:33:30 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/26 23:00:55 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void		init_filler(t_filler *filler)
 	filler->y = 0;
 	filler->p_y = -1;
 	filler->p_x = -1;
+	filler->xm = -1;
+	filler->ym = -1;
 }
 
 int			main(void)

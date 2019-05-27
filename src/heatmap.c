@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 22:52:34 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/26 10:11:59 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/27 02:03:14 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,8 @@ static void	put_me_in(t_filler *filler)
 		j = 0;
 		while (j < filler->cols)
 		{
-			if (filler->map[i][j] == -1)
-				filler->heatmap[i][j] = -1;
-			if (filler->map[i][j] == -2)
-				filler->heatmap[i][j] = -2;
+			if (filler->map[i][j] < 0)
+				filler->heatmap[i][j] = filler->map[i][j];
 			j++;
 		}
 		i++;
@@ -134,92 +132,71 @@ int			is_touch(t_filler *filler)
 	return (0);
 }
 
-int			is_smaller(int min, int a, int b, int c)
+/*
+**		In little map it's better to attack: further coin :<
+**		In Big Maps it's better to attack: near coin XD
+*/
+
+void		affect_yxm(t_filler *filler, int y, int x)
 {
-	if (min > a && (min < c || min < b))
-			return (1);
-	if (min > b && (min < c || min < a))
-		return (1);
-	if (min > c && (min < b || min < a))
-		return (1);
-	return (0);
+	filler->ym = y;
+	filler->xm = x;
 }
 
-void		coord_max(t_filler *filler, int *ym, int *xm)
+void		coord_max(t_filler *filler)
 {
-	int		diff_xmr;
-	int		diff_xml;
 	int		diff_ymu;
 	int		diff_ymd;
 
-	diff_xmr = filler->cols - filler->p_x - 1;
 	diff_ymd = filler->rows - filler->p_y - 1;
-	diff_xml = filler->p_x;
 	diff_ymu = filler->p_y;
-	if (is_smaller(diff_xmr, diff_ymd, diff_xml, diff_ymu))
+	if (filler->rows > 20)
 	{
-		//*ym = filler->p_y;
-		//*ym = filler->p_y;
-		*xm = filler->cols - 1;
+		if (diff_ymd < diff_ymu)
+			affect_yxm(filler, filler->rows - 1,
+						filler->cols / 2);
+		else
+			affect_yxm(filler, 0, filler->cols / 2);
 	}
-	if (is_smaller(diff_ymd, diff_xmr, diff_xml, diff_ymu))
+	else
 	{
-		*ym = filler->rows - 1;
-		//*xm = filler->p_x;
-		*xm = filler->cols / 2;
+		if (diff_ymd > diff_ymu)
+			affect_yxm(filler, filler->rows - 1,
+						filler->cols / 2);
+		else
+			affect_yxm(filler, 0, filler->cols / 2);
 	}
-	if (is_smaller(diff_xml, diff_ymd, diff_xmr, diff_ymu))
-	{
-		//*ym = filler->p_y;
-		*ym = filler->rows / 2;
-		*xm = 0;
-	}
-	if (is_smaller(diff_ymu, diff_ymd, diff_xml, diff_xmr))
-	{
-		*ym = 0;
-		//*xm = filler->p_x;
-		*xm = filler->cols / 2;
-	}
-}
-
-static int	isok(int coord)
-{
-	if (coord == 0 || coord == -1 || coord == -2)
-		return (1);
-	return (0);
 }
 
 static void	heatmap_engine_extrm(t_filler *filler, int y, int x, int siege)
 {
 	if (x + 1 < filler->cols &&
-			isok(filler->heatmap[y][x + 1]))
+			(filler->heatmap[y][x + 1] <= 0))
 		filler->heatmap[y][x + 1] = siege;
-	if (x - 1 >= 0 &&
-			isok(filler->heatmap[y][x - 1]))
+	if (x - 1 >= 0 && (filler->heatmap[y][x - 1] <= 0))
 		filler->heatmap[y][x - 1] = siege;
 	if (y + 1 < filler->rows &&
-			isok(filler->heatmap[y + 1][x]))
+			(filler->heatmap[y + 1][x] <= 0))
 		filler->heatmap[y + 1][x] = siege;
-	if (y - 1 >= 0 &&
-			isok(filler->heatmap[y - 1][x]))
+	if (y - 1 >= 0 && (filler->heatmap[y - 1][x] <= 0))
 		filler->heatmap[y - 1][x] = siege;
 	if (y - 1 >= 0 && x - 1 >= 0 &&
-			isok(filler->heatmap[y - 1][x - 1]))
+			(filler->heatmap[y - 1][x - 1] <= 0))
 		filler->heatmap[y - 1][x - 1] = siege;
 	if (y + 1 < filler->rows && x + 1 < filler->cols &&
-			isok(filler->heatmap[y + 1][x + 1]))
+			(filler->heatmap[y + 1][x + 1] <= 0))
 		filler->heatmap[y + 1][x + 1] = siege;
 	if (x - 1 >= 0 && y + 1 < filler->rows &&
-			isok(filler->heatmap[y + 1][x - 1]))
+			(filler->heatmap[y + 1][x - 1] <= 0))
 		filler->heatmap[y + 1][x - 1] = siege;
 	if (y - 1 >= 0 && x + 1 < filler->cols &&
-			isok(filler->heatmap[y - 1][x + 1]))
+			(filler->heatmap[y - 1][x + 1] <= 0))
 		filler->heatmap[y - 1][x + 1] = siege;
 }
 
 int			heat_map_extrm(t_filler *filler, int ym, int xm)
 {
-	int		vic_sieg[3];
+	int		vic_sieg[2];
 	int		wave;
 	int		i;
 	int		j;
@@ -233,48 +210,26 @@ int			heat_map_extrm(t_filler *filler, int ym, int xm)
 	{
 		i = -1;
 		vic_sieg[0] = wave + 1;
-		vic_sieg[1] = wave + 1;
-		vic_sieg[2] = wave + 2;
+		vic_sieg[1] = wave + 2;
 		while (++i < filler->rows)
 		{
 			j = -1;
 			while (++j < filler->cols)
 				if (filler->heatmap[i][j] == vic_sieg[0] ||
 						filler->heatmap[i][j] == vic_sieg[1])
-					heatmap_engine_extrm(filler, i, j, vic_sieg[2]);
+					heatmap_engine_extrm(filler, i, j, vic_sieg[i]);
 		}
 	}
 	put_me_in(filler);
-/*	i = 0;
-	while (i < filler->rows)
-	{
-		j = 0;
-		while (j < filler->cols)
-		{
-			if (filler->heatmap[i][j] < 10 && filler->heatmap[i][j] >= 0)
-				ft_putchar_fd(' ', 2);
-			ft_dprintf(2, "%d ", filler->heatmap[i][j]);
-			j++;
-		}
-		i++;
-	}*/
 	return (1);
 }
 
-
-
 int			heat_map(t_filler *filler)
 {
-	int		xm;
-	int		ym;
-
-	coord_max(filler, &ym, &xm);
-	if (filler->map[ym][xm] == 0)
-	{
-		//ft_putstr_fd("ana f extrem\n", 2);
-		return (heat_map_extrm(filler, ym, xm));
-	}
-	//ft_dprintf(2, "\n---ym: [%d] --- xm: [%d]-----\n", ym, xm);
+	if (filler->ym == -1 && filler->xm == -1)
+		coord_max(filler);
+	if (filler->map[filler->ym][filler->xm] == 0)
+		return (heat_map_extrm(filler, filler->ym, filler->xm));
 	return (heat_map_final(filler));
 	return (1);
 }

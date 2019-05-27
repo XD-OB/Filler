@@ -6,7 +6,7 @@
 /*   By: obelouch <obelouch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 09:56:15 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/26 09:33:11 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/27 00:01:40 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	fill_map_segm(t_filler *filler, int **segm, int p)
 	while (line[++j] && filler)
 	{
 		fill_segm_case(filler, &(*segm)[i], line[j]);
-		if ((*segm)[i] == -1 && filler->p_y == -1)
+		if ((*segm)[i] == -1 && filler->p_y == -1 && filler->p_x == -1)
 		{
 			filler->p_y = p;
 			filler->p_x = i;

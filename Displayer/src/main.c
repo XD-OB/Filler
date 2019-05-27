@@ -6,11 +6,26 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 05:29:31 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 07:45:32 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/27 00:49:47 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "displayer.h"
+
+void			print_usage(void)
+{
+	ft_printf("%{CYAN}  ---# obelouch displayer #---%{eoc}\n");
+	ft_printf("  | Pause on/off : %{GREEN}SPACE%{eoc}     |\n");
+	ft_printf("  | Next Turn    : %{GREEN}UP%{eoc}        |\n");
+	ft_printf("  | Previous Turn: %{GREEN}DOWN%{eoc}      |\n");
+	ft_printf("  | Speed +      : %{GREEN}RIGHT%{eoc}     |\n");
+	ft_printf("  | Speed -      : %{GREEN}LEFT%{eoc}      |\n");
+	ft_printf("  | Change Color : %{GREEN}C%{eoc}         |\n");
+	ft_printf("  | Music on/off : %{GREEN}M%{eoc}         |\n");
+	ft_printf("  | End Game     : %{GREEN}E%{eoc}         |\n");
+	ft_printf("%{CYAN}  ----------------------------%{eoc}\n");
+	ft_printf("%{CYAN}        WAIT THE LOADING...%{eoc}\n");
+}
 
 int				main(int ac, char **av)
 {
@@ -23,6 +38,7 @@ int				main(int ac, char **av)
 		return (EXIT_FAILURE);
 	if (!create_window_render(&display))
 		return (EXIT_FAILURE);
+	print_usage();
 	if (!record_game(&display))
 		return (EXIT_FAILURE);
 	init_display(&display);

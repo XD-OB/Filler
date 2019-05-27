@@ -6,7 +6,7 @@
 /*   By: obelouch <obelouch@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 06:45:05 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 23:18:33 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/26 23:00:23 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ typedef struct	s_filler
 	char		**token;
 	int			**heatmap;
 	int			**map;
+	int			flag;
 	int			p_y;
 	int			p_x;
+	int			ym;
+	int			xm;
 	int			x;
 	int			y;
 }				t_filler;

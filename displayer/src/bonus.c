@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/25 07:21:34 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/25 23:03:13 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/27 00:35:10 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,13 @@ void		reset_game(t_display *display, t_movie **curr)
 {
 	*curr = display->movie;
 	display->pause = 1;
+	draw_current(display, *curr);
+}
+
+void		end_game(t_display *display, t_movie **curr)
+{
+	while ((*curr)->next)
+		*curr = (*curr)->next;
 	draw_current(display, *curr);
 }
 
