@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/23 22:52:34 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/27 02:03:14 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/05/27 05:26:43 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,31 +110,9 @@ int			heat_map_final(t_filler *filler)
 	return (1);
 }
 
-int			is_touch(t_filler *filler)
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (i < filler->rows)
-	{
-		j = 0;
-		while (j < filler->cols)
-		{
-			if ((i == 0 || i == filler->rows - 1 ||
-				j == 0 || j == filler->cols - 1) &&
-				filler->map[i][j] == -1)
-				return (1);
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
-
 /*
-**		In little map it's better to attack: further coin :<
-**		In Big Maps it's better to attack: near coin XD
+**		In little map it's better to attack: further safe :<
+**		In Big Maps it's better to attack: near safe XD
 */
 
 void		affect_yxm(t_filler *filler, int y, int x)
@@ -153,8 +131,7 @@ void		coord_max(t_filler *filler)
 	if (filler->rows > 20)
 	{
 		if (diff_ymd < diff_ymu)
-			affect_yxm(filler, filler->rows - 1,
-						filler->cols / 2);
+			affect_yxm(filler, filler->rows - 1, filler->cols / 2);
 		else
 			affect_yxm(filler, 0, filler->cols / 2);
 	}
@@ -215,9 +192,8 @@ int			heat_map_extrm(t_filler *filler, int ym, int xm)
 		{
 			j = -1;
 			while (++j < filler->cols)
-				if (filler->heatmap[i][j] == vic_sieg[0] ||
-						filler->heatmap[i][j] == vic_sieg[1])
-					heatmap_engine_extrm(filler, i, j, vic_sieg[i]);
+				if (filler->heatmap[i][j] == vic_sieg[0])
+					heatmap_engine_extrm(filler, i, j, vic_sieg[1]);
 		}
 	}
 	put_me_in(filler);
@@ -231,5 +207,4 @@ int			heat_map(t_filler *filler)
 	if (filler->map[filler->ym][filler->xm] == 0)
 		return (heat_map_extrm(filler, filler->ym, filler->xm));
 	return (heat_map_final(filler));
-	return (1);
 }
