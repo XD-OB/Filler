@@ -6,7 +6,7 @@
 /*   By: obelouch <OB-96@hotmail.com>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/24 05:29:31 by obelouch          #+#    #+#             */
-/*   Updated: 2019/05/27 00:49:47 by obelouch         ###   ########.fr       */
+/*   Updated: 2019/06/14 17:57:24 by obelouch         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,11 @@ void			print_usage(void)
 	ft_printf("%{CYAN}        WAIT THE LOADING...%{eoc}\n");
 }
 
-int				main(int ac, char **av)
+int				main(void)
 {
 	t_display	display;
 	t_movie		*curr;
 
-	(void)ac;
-	(void)av;
 	if (!init_sdl())
 		return (EXIT_FAILURE);
 	if (!create_window_render(&display))
