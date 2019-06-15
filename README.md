@@ -4,8 +4,7 @@ If one of these conditionsis not met, the game stops. Each successfully placed p
 However, it is with two players that the filler takes all his interest. Each player has for the purpose of placing as manypieces as possible while attempting to prevent his opponent from doing the same. At theend of the game, the one with the most points wins the match...
 
 # Requierment:
-* IN UBUNTU:
 
-SDL-TTF : sudo apt-get install libsdl-ttf2.0-dev
+SDL2  SDL2-TTF  SDL2-IMAGE  SDL2-MIXER
 
-FREETYPE: sudo apt-get install libfreetype6-dev
+FREETYPE
