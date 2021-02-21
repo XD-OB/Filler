@@ -14,7 +14,7 @@ GREEN = \033[1;32m
 RED = \033[1;31m
 EOC = \033[1;0m
 
-LIB_SDL = -L /Users/obelouch/.brew/lib/ -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer\
+LIB_SDL = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer\
 
 NAME = ob_displayer
 

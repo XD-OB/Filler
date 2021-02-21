@@ -80,8 +80,8 @@ void			draw_rect(t_display *display, t_movie *curr,
 	tab[1] = j;
 	rect = ft_rect(BLOCK(display->map_h),
 			BLOCK(display->map_w),
-			i * (rect.h + 1) + ((HEIGHT - 600) / 2),
-			j * (rect.w + 1) + ((WIDTH - 600) / 2));
+			i * (rect.h + 1) + ((HEIGHT - BOX) / 2),
+			j * (rect.w + 1) + ((WIDTH - BOX) / 2));
 	if (draw_x_rect(display, curr, tab, rect))
 		return ;
 	else if (draw_o_rect(display, curr, tab, rect))

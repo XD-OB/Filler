@@ -12,7 +12,7 @@
 
 #include "displayer.h"
 
-#define SDL_INIT_FLAGS	(SDL_INIT_VIDEO | SDL_INIT_AUDIO)
+#define SDL_INIT_FLAGS	(SDL_INIT_VIDEO) /* | SDL_INIT_AUDIO)*/
 #define IMG_INIT_FLAGS	(IMG_INIT_PNG | IMG_INIT_JPG)
 
 static int			error_manager(int type)

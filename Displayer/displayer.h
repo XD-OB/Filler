@@ -15,22 +15,23 @@
 
 # include "../libft/libft.h"
 # include "stdlib.h"
-# include "/Users/obelouch/.brew/include/SDL2/SDL.h"
-# include "/Users/obelouch/.brew/include/SDL2/SDL_ttf.h"
-# include "/Users/obelouch/.brew/include/SDL2/SDL_mixer.h"
-# include "/Users/obelouch/.brew/include/SDL2/SDL_image.h"
+# include <SDL2/SDL.h>
+# include <SDL2/SDL_ttf.h>
+# include <SDL2/SDL_mixer.h>
+# include <SDL2/SDL_image.h>
 
-# define WIDTH 1400
-# define HEIGHT 1000
+# define WIDTH 1000
+# define HEIGHT 700
 
-# define BLOCK(x) (600 / x - 1)
+# define BOX 400 
+# define BLOCK(x) (BOX / x - 1)
 # define TITLE "Bring Your Filler And Let's Fight!"
 # define BK_MUSIC "./music/war.ogg"
 # define BK_IMG "./img/war.jpg"
 # define FONT_WTYPE	"./Fonts/GROBOLD.ttf"
 # define FONT_TYPE	"./Fonts/nadiasofia.ttf"
-# define FONT_WSIZE	90
-# define FONT_SIZE	90
+# define FONT_WSIZE	50
+# define FONT_SIZE	70
 
 typedef struct			s_movie
 {

@@ -52,7 +52,7 @@ void				put_scene(t_display *display)
 	rect = ft_rect(HEIGHT / 10, WIDTH - WIDTH / 25, 0, WIDTH / 50);
 	SDL_SetRenderDrawColor(display->render, 200, 200, 200, 255);
 	SDL_RenderFillRect(display->render, &rect);
-	rect = ft_rect(600, 600, (HEIGHT / 2) - 300, (WIDTH / 2) - 300);
+	rect = ft_rect(BOX, BOX, (HEIGHT / 2) - BOX/2, (WIDTH / 2) - BOX/2);
 	SDL_SetRenderDrawColor(display->render, 200, 200, 200, 255);
 	SDL_RenderFillRect(display->render, &rect);
 }

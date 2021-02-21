@@ -14,7 +14,7 @@
 
 void			init_display(t_display *display)
 {
-	display->clr = 0;
+	display->clr = 1;
 	display->pass = 1;
 	display->pause = 1;
 	display->mute = -1;

@@ -20,7 +20,7 @@ static void	display_score2(t_display *display)
 	TTF_Font	*font;
 	char		*str[2];
 
-	font = TTF_OpenFont("./Fonts/arial.ttf", 60);
+	font = TTF_OpenFont("./Fonts/arial.ttf", 30);
 	str[0] = ft_itoa(display->score_p2);
 	str[1] = str[0];
 	str[0] = ft_strjoin("score: ", str[0]);
@@ -46,7 +46,7 @@ static void	display_score1(t_display *display)
 	TTF_Font	*font;
 	char		*str[2];
 
-	font = TTF_OpenFont("./Fonts/arial.ttf", 60);
+	font = TTF_OpenFont("./Fonts/arial.ttf", 30);
 	str[0] = ft_itoa(display->score_p1);
 	str[1] = str[0];
 	str[0] = ft_strjoin("score: ", str[0]);
