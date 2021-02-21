@@ -1,8 +1,8 @@
 # Filler
 
-![logo](/ressources/screenshots/logo.png)
+![logo](/resources/screenshots/logo.png)
 
-![Subject](/ressources/filler.en.pdf)
+![Subject](/resources/filler.en.pdf)
 
 Filler is a game, where two players / algorithm are fighting on a map
 
@@ -30,13 +30,13 @@ At the end of the game, the one with the most points WIN the match...
 
 ### game using visualizer
 
-![menu](/ressources/screenshots/menu.png)
+![menu](/resources/screenshots/menu.png)
 
-![gameplay_carli](/ressources/screenshots/gameplay_carli.png)
+![gameplay_carli](/resources/screenshots/gameplay_carli.png)
 
-![gameplay_anas](/ressources/screenshots/gameplay_anas.png)
+![gameplay_anas](/resources/screenshots/gameplay_anas.png)
 
-![gameplay_win](/ressources/screenshots/gameplay_win.png)
+![gameplay_win](/resources/screenshots/gameplay_win.png)
 
 You can **Save Screenshots** in the game using: `s`
 
